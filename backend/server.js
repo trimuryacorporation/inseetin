@@ -24,6 +24,7 @@ const app = express()
 const port = process.env.PORT || 5000
 const allowedOrigins = [
   process.env.CLIENT_URL,
+  ...(process.env.CORS_ORIGINS || '').split(',').map(origin => origin.trim().replace(/\/$/, '')),
   'https://www.inseet.in',
   'https://inseet.in',
 ].filter(Boolean)

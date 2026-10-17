@@ -69,19 +69,19 @@ export function HomePage({ onApply }) {
       )}
 
       <div className="hidden md:block">
+        <LatestJobsSection hasMore={premiumJobs.length > 2} jobs={latestJobs} loading={jobsLoading} error={jobsError} onApply={onApply} />
+
         {liveCompanies.length > 0 && (
           <Section className="bg-white" title="Trusted companies hiring on INSEET" subtitle="Verified recruiter profiles with active openings and transparent role information.">
             <CompanyGrid companies={liveCompanies} />
           </Section>
         )}
 
-        <LatestJobsSection hasMore={premiumJobs.length > 2} jobs={latestJobs} loading={jobsLoading} error={jobsError} onApply={onApply} />
-
         <CareerFocusBand jobs={liveJobs} />
 
-        <TrustedByCandidates />
-
       </div>
+
+      <TrustedByCandidates />
     </>
   )
 }
@@ -92,7 +92,7 @@ function MobileHomeJobs({ jobs = [], loading, error, onApply }) {
       <div className="mb-3 flex items-center justify-between gap-3">
         <div>
           <p className="text-xs font-black uppercase tracking-wide text-blue-600">Recommended</p>
-          <h2 className="text-lg font-black text-slate-950">Fresh jobs for you</h2>
+          <h2 className="text-lg font-black text-slate-950">Latest Jobs</h2>
         </div>
         <Link className="rounded-[7px] bg-blue-50 px-3 py-2 text-xs font-black text-blue-700" to="/jobs">View all</Link>
       </div>

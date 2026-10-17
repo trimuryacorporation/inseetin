@@ -1,38 +1,11 @@
-const LIVE_API_BASE_URL = 'https://cromgerozgar.onrender.com'
+import { resolveApiBaseUrl } from '../utils/apiBaseUrl'
 
-const API_BASE_URL = getApiBaseUrl()
-
-function getApiBaseUrl() {
-  const configuredUrl = import.meta.env.VITE_API_URL || ''
-
-  if (isLocalFrontend() && (!configuredUrl || isFrontendDomain(configuredUrl))) {
-    return import.meta.env.VITE_LOCAL_API_URL || 'http://localhost:5050'
-  }
-
-  if (configuredUrl && !isFrontendDomain(configuredUrl)) {
-    return configuredUrl
-  }
-
-  if (typeof window !== 'undefined' && window.location.origin) {
-    return window.location.origin
-  }
-
-  return LIVE_API_BASE_URL
-}
-
-function isLocalFrontend() {
-  if (typeof window === 'undefined') return false
-  return ['localhost', '127.0.0.1', '::1'].includes(window.location.hostname)
-}
-
-function isFrontendDomain(url) {
-  try {
-    const hostname = new URL(url).hostname.replace(/^www\./, '')
-    return hostname === 'inseet.in'
-  } catch {
-    return false
-  }
-}
+const API_BASE_URL = resolveApiBaseUrl({
+  hostname: typeof window !== 'undefined' ? window.location.hostname : '',
+  origin: typeof window !== 'undefined' ? window.location.origin : '',
+  configuredUrl: import.meta.env.VITE_API_URL || '',
+  localUrl: import.meta.env.VITE_LOCAL_API_URL || '',
+})
 
 function apiUrl(path) {
   const baseUrl = API_BASE_URL.replace(/\/$/, '')

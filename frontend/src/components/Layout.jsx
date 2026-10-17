@@ -860,9 +860,8 @@ function MainFooter({ branding, newsletterEmail, newsletterLoading, newsletterSt
                 </div>
               </div>
               <Link
-                className="mt-3 inline-flex h-10 w-full items-center justify-center gap-2 rounded-[8px] border px-5 text-sm font-black shadow-none transition hover:-translate-y-0.5"
+                className="mt-3 inline-flex h-10 w-full items-center justify-center gap-2 rounded-[8px] border border-orange-400 bg-orange-400 px-5 text-sm font-black text-slate-950 shadow-none transition hover:bg-orange-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white"
                 onClick={handleFooterLinkClick}
-                style={{ backgroundColor: 'transparent', borderColor: '#ff8a00', color: '#000000' }}
                 to="/jobs"
               >
                 Find Jobs <ArrowRight size={17} />
@@ -988,7 +987,7 @@ function FooterLinkPanel({ icon, title, links, onLinkClick, tone }) {
       </div>
       <div className="grid divide-y divide-slate-100">
         {links.map(([label, to]) => (
-          <Link className="flex items-center justify-between gap-2 py-2 text-xs font-bold text-slate-700 transition hover:text-blue-600 sm:text-sm" key={label} onClick={onLinkClick} to={to}>
+          <Link className="flex items-center justify-between gap-2 rounded-md px-2 py-2 text-xs font-bold text-slate-700 transition hover:bg-blue-50 hover:text-blue-600 focus-visible:bg-blue-50 focus-visible:text-blue-600 sm:text-sm" key={label} onClick={onLinkClick} to={to}>
             {label}
             <ChevronRight className="text-slate-400" size={15} />
           </Link>

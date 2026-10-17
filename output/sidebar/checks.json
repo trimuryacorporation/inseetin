@@ -1,0 +1,33 @@
+{
+  "checks": [
+    {
+      "name": "Six clearly labeled navigation sections",
+      "passed": true
+    },
+    {
+      "name": "Only Company is marked current",
+      "passed": true
+    },
+    {
+      "name": "API Developer is in Settings & Integrations",
+      "passed": true
+    },
+    {
+      "name": "User filter highlights Staff only",
+      "passed": true
+    },
+    {
+      "name": "Mobile drawer displays all sections",
+      "passed": true
+    },
+    {
+      "name": "Selecting a page closes mobile navigation",
+      "passed": true
+    },
+    {
+      "name": "No runtime exceptions",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

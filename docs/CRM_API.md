@@ -8,7 +8,7 @@ Open **Admin ? API Developer** at /admin/api-developer.
 2. Set a connection name, expiry, and resource permissions. Default access is read-only for jobs, companies, candidates and applications.
 3. Generate a key and copy it immediately. Only its SHA-256 hash is stored; the original key cannot be retrieved.
 4. Store it as INSEET_API_KEY in your CRM server's environment/secret store. Do not embed it in public browser or mobile code.
-5. Set INSEET_API_BASE to the base URL shown in the Developer screen. Local development uses http://localhost:5050/api/integrations/v1. For deployment, use the production backend origin, not the frontend origin.
+5. Set INSEET_API_BASE to the base URL shown in the Developer screen. Local development uses http://localhost:5050/api/integrations/v1. Production uses https://inseet.in/api/integrations/v1 (or the www domain when opened there). Vercel forwards /api/* to the existing Render backend, so the database and API-key storage remain on that backend. Deploy the updated backend routes to Render and the root vercel.json plus frontend to Vercel together.
 6. Send X-API-Key on every request. Keys do not replace the Admin login for key management.
 
 The CRM integration uses the same MongoDB records as the website; existing job review, account validation and file cleanup rules apply. Website pages show changes when their data is fetched/refreshed. This feature supplies the API; it does not configure your separate CRM automatically.
@@ -120,3 +120,7 @@ Keys are shown only once. For rotation, create a replacement, update your CRM se
 - npm.cmd --prefix frontend run build
 
 Backend tests use model stubs and an isolated HTTP server. They do not modify real database records or send messages. Browser tests exercise generation, masking, dismissal, access editing, revocation and responsive layouts at 375/768/1440 px. Real local backend health and both authentication gates were checked after restarting the development API; no real integration key was generated automatically.
+
+## Deployment routing check
+
+After both deployments, GET https://inseet.in/api/health should return 200. GET https://inseet.in/api/developer/keys and /api/integrations/v1/jobs without credentials should return 401, not 404. A 404 from the backend means the developer routes have not been deployed. Do not switch to an unrelated database or expose provider secrets to fix routing.

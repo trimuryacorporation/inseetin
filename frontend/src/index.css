@@ -728,3 +728,20 @@ a.recruiter-cta-primary-btn svg {
   color: #ffffff !important;
   stroke: #ffffff !important;
 }
+
+/* Keep footer interactions visible without shifting nearby content. */
+footer a, footer button {
+  transition-property: color, background-color, border-color, box-shadow;
+  transition-duration: 180ms;
+}
+footer a:focus-visible, footer button:focus-visible {
+  outline: 2px solid #ff8a00;
+  outline-offset: 3px;
+}
+@media (hover: hover) {
+  footer a:hover, footer button:not(:disabled):hover {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+}
+html { scroll-padding-top: 112px; }

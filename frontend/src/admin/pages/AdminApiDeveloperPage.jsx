@@ -79,10 +79,10 @@ function DeveloperWorkspace() {
   }
   const download = async () => {
     try {
-      const document = await api.developerOpenApi()
-      // Use the actual configured backend address in downloaded CRM documentation.
-      document.servers = [{ url: baseUrl }]
-      const url = URL.createObjectURL(new Blob([JSON.stringify(document, null, 2)], { type: 'application/json' }))
+      const specification = await api.developerOpenApi()
+      // The downloaded CRM documentation uses the same public address as the connection field.
+      specification.servers = [{ url: baseUrl }]
+      const url = URL.createObjectURL(new Blob([JSON.stringify(specification, null, 2)], { type: 'application/json' }))
       const link = document.createElement('a'); link.href = url; link.download = 'inseet-crm-openapi.json'; link.click()
       setTimeout(() => URL.revokeObjectURL(url), 1000)
     } catch (err) { setError(err.message) }

@@ -1,0 +1,73 @@
+{
+  "checks": [
+    {
+      "name": "Latest Jobs above trusted companies at 1440",
+      "passed": true
+    },
+    {
+      "name": "Screenshot testimonial design uses live count and rating at 1440",
+      "passed": true
+    },
+    {
+      "name": "Navigation stays compact with 56 reviews at 1440",
+      "passed": true
+    },
+    {
+      "name": "Page fits screen at 1440",
+      "passed": true
+    },
+    {
+      "name": "Next review works at 1440",
+      "passed": true
+    },
+    {
+      "name": "Latest Jobs above trusted companies at 375",
+      "passed": true
+    },
+    {
+      "name": "Screenshot testimonial design uses live count and rating at 375",
+      "passed": true
+    },
+    {
+      "name": "Navigation stays compact with 56 reviews at 375",
+      "passed": true
+    },
+    {
+      "name": "Page fits screen at 375",
+      "passed": true
+    },
+    {
+      "name": "Next review works at 375",
+      "passed": true
+    },
+    {
+      "name": "Latest Jobs above trusted companies at 768",
+      "passed": true
+    },
+    {
+      "name": "Screenshot testimonial design uses live count and rating at 768",
+      "passed": true
+    },
+    {
+      "name": "Navigation stays compact with 56 reviews at 768",
+      "passed": true
+    },
+    {
+      "name": "Page fits screen at 768",
+      "passed": true
+    },
+    {
+      "name": "Next review works at 768",
+      "passed": true
+    },
+    {
+      "name": "Footer CTA changes appearance on hover",
+      "passed": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

@@ -41,130 +41,93 @@ import {
   X,
 } from 'lucide-react'
 import { api } from '../../services/api'
+import { getActiveSidebarTarget } from '../../utils/adminNavigation'
 import { useSiteBranding } from '../../utils/siteBranding'
 import { applyThemeMode, getInitialThemeMode } from '../../utils/themeMode'
 
-const sidebarItems = [
-  { label: 'Dashboard', to: '/admin', icon: LayoutDashboard, roles: ['Admin'] },
-  {
-    label: 'User Management',
-    to: '/admin/users',
-    icon: UsersRound,
-    roles: ['Admin'],
-    children: [
-      { label: 'All Users', to: '/admin/users', icon: UsersRound },
-      { label: 'User', to: '/admin/users?q=users', icon: UsersRound },
-      { label: 'Admin', to: '/admin/users?q=Admin', icon: UsersRound },
-      { label: 'Staff', to: '/admin/users?q=staff', icon: UsersRound },
-      { label: 'Recruiter', to: '/admin/users?q=recruiter', icon: UsersRound },
-      { label: 'Freelancer', to: '/admin/users?q=freelancer', icon: UsersRound },
-      { label: 'Hiring', to: '/admin/users?q=hiring', icon: UserPlus },
-      { label: 'Account Team', to: '/admin/users?q=account%20team', icon: Wallet },
-    ],
-  },
-  { label: 'Jobs Management', to: '/admin/jobs', icon: BriefcaseBusiness, roles: ['Admin'] },
-  {
-    label: 'Projects Management',
-    to: '/admin/projects',
-    icon: ClipboardList,
-    roles: ['Admin'],
-    children: [
+const sidebarSections = [
+  { label: 'Overview', items: [
+    { label: 'Dashboard', to: '/admin-dashboard', icon: LayoutDashboard },
+  ] },
+  { label: 'Hiring & Projects', items: [
+    { label: 'Jobs', to: '/admin/jobs', icon: BriefcaseBusiness },
+    { label: 'Projects', to: '/admin/projects', icon: ClipboardList, children: [
       { label: 'Project Directory', to: '/admin/projects', icon: BriefcaseBusiness },
       { label: 'Project Applications', to: '/admin/projects?view=applications', icon: FileCheck2 },
-    ],
-  },
-  {
-    label: 'Recruiters',
-    to: '/admin/employers',
-    icon: Building2,
-    roles: ['Admin'],
-    children: [
-      { label: 'Recruiter Management', to: '/admin/employers', icon: Building2 },
+    ] },
+    { label: 'Applications', to: '/admin/applications', icon: FileCheck2 },
+    { label: 'Hiring Team', to: '/admin/hiring-team', icon: UserPlus },
+  ] },
+  { label: 'People & Companies', items: [
+    { label: 'Users', to: '/admin/users', icon: UsersRound, children: [
+      { label: 'All Users', to: '/admin/users', icon: UsersRound },
+      { label: 'Candidates / Users', to: '/admin/users?q=users', icon: UsersRound },
+      { label: 'Admins', to: '/admin/users?q=Admin', icon: Shield },
+      { label: 'Staff', to: '/admin/users?q=staff', icon: UsersRound },
+      { label: 'Recruiters', to: '/admin/users?q=recruiter', icon: Building2 },
+      { label: 'Freelancers', to: '/admin/users?q=freelancer', icon: UsersRound },
+      { label: 'Hiring Team', to: '/admin/users?q=hiring', icon: UserPlus },
+      { label: 'Account Team', to: '/admin/users?q=account%20team', icon: Wallet },
+    ] },
+    { label: 'Candidates', to: '/admin/candidates', icon: UsersRound },
+    { label: 'Recruiters', to: '/admin/employers', icon: Building2, children: [
+      { label: 'Recruiter Management', to: '/admin/employers', icon: Building2, activePaths: ['/admin/recruiters/'] },
       { label: 'Recruiter Documents', to: '/admin/recruiter-documents', icon: FileCheck2 },
-    ],
-  },
-  { label: 'API Developer', to: '/admin/api-developer', icon: KeyRound, roles: ['Admin'] },
-  { label: 'Candidates', to: '/admin/candidates', icon: UsersRound, roles: ['Admin'] },
-  { label: 'Hiring Team', to: '/admin/hiring-team', icon: UserPlus, roles: ['Admin'] },
-  { label: 'Applications', to: '/admin/applications', icon: FileCheck2, roles: ['Admin'] },
-  {
-    label: 'Campaigns',
-    to: '/admin/campaigns',
-    icon: Megaphone,
-    roles: ['Admin', 'staff'],
-    children: [
-      { label: 'Email Marketing', to: '/admin/campaigns?channel=Email%20Marketing', icon: Mail },
-      { label: 'Mobile Message Marketing', to: '/admin/campaigns?channel=Mobile%20Message%20Marketing', icon: MessageCircle },
-    ],
-  },
-  { label: 'Industry', to: '/admin/categories', icon: Building2, roles: ['Admin'] },
-  { label: 'Company', to: '/admin/companies', icon: Building2, roles: ['Admin'] },
-  {
-    label: 'Website Content',
-    to: '/admin/testimonials',
-    icon: Star,
-    roles: ['Admin'],
-    children: [
+    ] },
+    { label: 'Companies', to: '/admin/companies', icon: Building2 },
+    { label: 'Industries', to: '/admin/categories', icon: Building2 },
+  ] },
+  { label: 'Content & Communication', items: [
+    { label: 'Website Content', to: '/admin/testimonials', icon: Star, children: [
       { label: 'Testimonials', to: '/admin/testimonials', icon: Star },
       { label: 'Video Testimonials', to: '/admin/video-testimonials', icon: Star },
       { label: 'Press / News', to: '/admin/press-news', icon: FileText },
       { label: 'Career Job Posts', to: '/admin/career-jobs', icon: BriefcaseBusiness },
       { label: 'FAQs', to: '/admin/faqs', icon: HelpCircle },
-      { label: 'Policy', to: '/admin/policy', icon: FileText },
+    ] },
+    { label: 'Policies', to: '/admin/policy', icon: FileText, children: [
+      { label: 'All Policies', to: '/admin/policy', icon: FileText },
       { label: 'User Policies', to: '/admin/policy/users', icon: FileText },
       { label: 'Recruiter Policies', to: '/admin/policy/recruiter', icon: FileText },
       { label: 'Freelancer Policies', to: '/admin/policy/freelancer', icon: FileText },
-      { label: 'SEO & Branding', to: '/admin/seo-branding', icon: Globe2 },
-      { label: 'Social Media', to: '/admin/social-media', icon: Share2 },
-      { label: 'Hiring Insights', to: '/admin/hiring-insights', icon: Send },
-      { label: 'Support Messages', to: '/admin/support-messages', icon: MessageCircle },
-    ],
-  },
-  {
-    label: 'Package',
-    to: '/admin/package/pricing',
-    icon: CreditCard,
-    roles: ['Admin'],
-    children: [
+    ] },
+    { label: 'Campaigns', to: '/admin/campaigns', icon: Megaphone, roles: ['Admin', 'staff'], children: [
+      { label: 'All Campaigns', to: '/admin/campaigns' },
+      { label: 'Email Marketing', to: '/admin/campaigns?channel=Email%20Marketing', icon: Mail },
+      { label: 'Mobile Marketing', to: '/admin/campaigns?channel=Mobile%20Message%20Marketing', icon: MessageCircle },
+    ] },
+    { label: 'Hiring Insights', to: '/admin/hiring-insights', icon: Send },
+    { label: 'Support Messages', to: '/admin/support-messages', icon: MessageCircle },
+  ] },
+  { label: 'Billing & Payments', items: [
+    { label: 'Packages', to: '/admin/package/pricing', icon: CreditCard, children: [
       { label: 'Pricing', to: '/admin/package/pricing', icon: CreditCard },
-      { label: 'Discount Coupon', to: '/admin/package/discount-coupons', icon: CreditCard },
-    ],
-  },
-  {
-    label: 'Payments',
-    to: '/admin/payments/transactions',
-    icon: Wallet,
-    roles: ['Admin'],
-    children: [
+      { label: 'Discount Coupons', to: '/admin/package/discount-coupons', icon: CreditCard },
+    ] },
+    { label: 'Payments', to: '/admin/payments/transactions', icon: Wallet, children: [
       { label: 'Transactions', to: '/admin/payments/transactions', icon: ReceiptText },
       { label: 'Payment Logs', to: '/admin/payments/logs', icon: ScrollText },
       { label: 'Payment Methods', to: '/admin/payments/methods', icon: CreditCard },
-    ],
-  },
-  {
-    label: 'Plugins',
-    to: '/admin/plugins/installed',
-    icon: Plug,
-    roles: ['Admin'],
-    children: [
-      { label: 'Add New Plugins', to: '/admin/plugins/add-new', icon: PlugZap },
+    ] },
+  ] },
+  { label: 'Settings & Integrations', items: [
+    { label: 'SEO & Branding', to: '/admin/seo-branding', icon: Globe2 },
+    { label: 'Social Media', to: '/admin/social-media', icon: Share2 },
+    { label: 'API Developer', to: '/admin/api-developer', icon: KeyRound },
+    { label: 'Plugins', to: '/admin/plugins/installed', icon: Plug, children: [
       { label: 'Installed Plugins', to: '/admin/plugins/installed', icon: Plug },
-    ],
-  },
-  {
-    label: 'Settings',
-    to: '/admin/settings/google-auth',
-    icon: Globe2,
-    roles: ['Admin'],
-    children: [
+      { label: 'Add Plugins', to: '/admin/plugins/add-new', icon: PlugZap },
+    ] },
+    { label: 'Account & API Settings', to: '/admin/settings/google-auth', icon: Shield, children: [
       { label: 'Google Auth API', to: '/admin/settings/google-auth', icon: KeyRound },
       { label: 'WhatsApp API', to: '/admin/settings/whatsapp-api', icon: MessageCircle },
       { label: 'Email API', to: '/admin/settings/email-api', icon: Mail },
       { label: 'Supa Cloud Storage', to: '/admin/settings/supa-cloud', icon: Cloud },
-      { label: 'Role & Permission', to: '/admin/settings/role-permission', icon: Shield },
-    ],
-  },
+      { label: 'Roles & Permissions', to: '/admin/settings/role-permission', icon: Shield },
+    ] },
+  ] },
 ]
+const sidebarItems = sidebarSections.flatMap(section => section.items.map(item => ({ roles: ['Admin'], ...item, section: section.label })))
 
 const employerSidebarItems = [
   { label: 'Recruiter Dashboard', to: '/recruiter-dashboard', icon: LayoutDashboard },
@@ -919,16 +882,16 @@ function AdminSidebar({ branding, desktopOpen, isEmployer, mobileOpen, onClose, 
   return (
     <>
       <aside className={`admin-material-sidebar fixed inset-y-0 left-0 z-50 hidden w-72 border-r border-slate-200 bg-white transition-transform duration-200 lg:block ${desktopOpen ? 'translate-x-0' : '-translate-x-full'}`}>
-        <SidebarContent branding={branding} isEmployer={isEmployer} role={role} />
+        <SidebarContent branding={branding} isEmployer={isEmployer} role={role} onNavigate={onClose} />
       </aside>
       {mobileOpen && (
         <div className="fixed inset-0 z-[80] lg:hidden">
           <button aria-label="Close sidebar overlay" className="absolute inset-0 bg-slate-900/30" onClick={onClose} type="button" />
           <aside className="admin-material-sidebar relative h-full w-80 max-w-[86vw] border-r border-slate-200 bg-white shadow-2xl">
-            <button className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-[7px] bg-slate-100" onClick={onClose} type="button">
+            <button aria-label="Close navigation" className="absolute right-4 top-4 grid h-10 w-10 place-items-center rounded-[7px] bg-slate-100" onClick={onClose} type="button">
               <X size={18} />
             </button>
-            <SidebarContent branding={branding} isEmployer={isEmployer} role={role} />
+            <SidebarContent branding={branding} isEmployer={isEmployer} role={role} onNavigate={onClose} />
           </aside>
         </div>
       )}
@@ -936,8 +899,8 @@ function AdminSidebar({ branding, desktopOpen, isEmployer, mobileOpen, onClose, 
   )
 }
 
-function SidebarContent({ branding, isEmployer, role }) {
-  const [openGroups, setOpenGroups] = useState({})
+function SidebarContent({ branding, isEmployer, role, onNavigate }) {
+  const [expansion, setExpansion] = useState({ route: null, groups: {} })
   const navigate = useNavigate()
   const location = useLocation()
   const items = isEmployer
@@ -953,6 +916,11 @@ function SidebarContent({ branding, isEmployer, role }) {
           : role === 'freelancer'
             ? freelancerSidebarItems
             : []
+
+  const currentRoute = location.pathname + location.search
+  const openGroups = expansion.route === currentRoute ? expansion.groups : {}
+  const activeTarget = getActiveSidebarTarget(items, location)
+  const sections = [...new Set(items.map(item => item.section || 'Workspace'))].map(label => ({ label, items: items.filter(item => (item.section || 'Workspace') === label) }))
 
   const logout = () => {
     localStorage.removeItem('authToken')
@@ -976,74 +944,32 @@ function SidebarContent({ branding, isEmployer, role }) {
           </>
         )}
       </Link>
-      <nav className="admin-material-nav mt-4 flex-1 space-y-1 overflow-y-auto px-4 pb-4">
-        {items.length ? (
-          items.map((item) => {
-            const Icon = item.icon
-
-            if (item.children?.length) {
-              const currentPath = `${location.pathname}${location.search}`
-              const isGroupActive = item.children.some((child) => location.pathname === child.to.split('?')[0])
+      <nav aria-label="Panel navigation" className="admin-material-nav min-h-0 flex-1 overflow-y-auto px-3 py-3">
+        {items.length ? <div className="space-y-5">{sections.map(section => (
+          <section aria-label={section.label} key={section.label}>
+            <h2 className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[0.14em] text-slate-400">{section.label}</h2>
+            <div className="space-y-1">{section.items.map(item => {
+              const Icon = item.icon
+              const isGroupActive = item.children?.some(child => child.to === activeTarget)
               const isExpanded = openGroups[item.label] ?? isGroupActive
-
-              return (
-                <div key={item.label}>
-                  <button
-                    className={`admin-material-nav-item flex w-full items-center gap-3 rounded-[7px] px-4 py-3 text-sm font-black tracking-[0.01em] transition ${
-                      isGroupActive ? 'admin-material-nav-active' : 'text-slate-700 hover:bg-[#E9F0FF] hover:text-[#3367F6]'
-                    }`}
-                    onClick={() => setOpenGroups((current) => ({ ...current, [item.label]: !isExpanded }))}
-                    type="button"
-                  >
-                    <Icon size={19} />
-                    <span className="flex-1 text-left">{item.label}</span>
-                    <ChevronDown className={`transition ${isExpanded ? 'rotate-180' : ''}`} size={16} />
+              const panelId = 'sidebar-group-' + item.to.replace(/[^a-z0-9]/gi, '-')
+              if (item.children?.length) return (
+                <div key={item.to}>
+                  <button className={'admin-material-nav-item flex min-h-11 w-full items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition ' + (isGroupActive ? 'admin-material-nav-active' : 'text-slate-700 hover:bg-[#E9F0FF] hover:text-[#3367F6]')} aria-expanded={!!isExpanded} aria-controls={panelId} onClick={() => setExpansion({ route: currentRoute, groups: { ...openGroups, [item.label]: !isExpanded } })} type="button">
+                    <Icon className="shrink-0" size={18} /><span className="min-w-0 flex-1 text-left">{item.label}</span><ChevronDown className={'shrink-0 transition-transform ' + (isExpanded ? 'rotate-180' : '')} size={15} />
                   </button>
-                  {isExpanded && (
-                    <div className="mt-1 grid gap-1 pl-5">
-                      {item.children.map((child) => {
-                        const ChildIcon = child.icon
-
-                        return (
-                          <NavLink
-                            className={({ isActive }) =>
-                              `admin-material-dropdown-item flex items-center gap-3 rounded-[7px] px-4 py-2.5 text-sm font-semibold transition ${
-                                isActive && currentPath === child.to ? 'bg-[#DCE8FF] text-[#3367F6]' : 'text-slate-700 hover:bg-[#F3F6FC] hover:text-[#3367F6]'
-                              }`
-                            }
-                            key={child.label}
-                            to={child.to}
-                          >
-                            <ChildIcon size={17} /> {child.label}
-                          </NavLink>
-                        )
-                      })}
-                    </div>
-                  )}
+                  {isExpanded && <div id={panelId} className="ml-5 mt-1 grid gap-1 border-l border-slate-200 pl-2">{item.children.map(child => {
+                    const ChildIcon = child.icon
+                    const active = activeTarget === child.to
+                    return <Link aria-current={active ? 'page' : undefined} onClick={onNavigate} className={'admin-material-dropdown-item flex min-h-10 items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold transition ' + (active ? 'bg-[#DCE8FF] text-[#3367F6]' : 'text-slate-600 hover:bg-[#F3F6FC] hover:text-[#3367F6]')} to={child.to} key={child.to}><ChildIcon className="shrink-0" size={16} /><span>{child.label}</span></Link>
+                  })}</div>}
                 </div>
               )
-            }
-
-            return (
-              <NavLink
-                className={({ isActive }) =>
-                  `admin-material-nav-item flex items-center gap-3 rounded-[7px] px-4 py-3 text-sm font-black tracking-[0.01em] transition ${
-                isActive ? 'admin-material-nav-active' : 'text-slate-700 hover:bg-[#E9F0FF] hover:text-[#3367F6]'
-                  }`
-                }
-                end={item.to === '/admin'}
-                key={item.label}
-                to={item.to}
-              >
-                <Icon size={19} /> {item.label}
-              </NavLink>
-            )
-          })
-        ) : (
-          <div className="rounded-[7px] bg-slate-50 p-4 text-sm font-black leading-6 text-slate-500">
-            {isEmployer ? 'Recruiter workspace' : `${role || 'User'} dashboard access only`}
-          </div>
-        )}
+              const active = activeTarget === item.to
+              return <Link aria-current={active ? 'page' : undefined} onClick={onNavigate} className={'admin-material-nav-item flex min-h-11 items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-semibold transition ' + (active ? 'admin-material-nav-active' : 'text-slate-700 hover:bg-[#E9F0FF] hover:text-[#3367F6]')} to={item.to} key={item.to}><Icon className="shrink-0" size={18} /><span>{item.label}</span></Link>
+            })}</div>
+          </section>
+        ))}</div> : <p className="rounded-lg bg-slate-50 p-4 text-sm text-slate-500">{role || 'User'} dashboard access only</p>}
       </nav>
       <div className="border-t border-slate-100 p-4">
         <button className="admin-sidebar-logout flex w-full items-center gap-3 rounded-[7px] px-4 py-3 text-sm font-bold text-rose-600 hover:bg-rose-50" onClick={logout} type="button">

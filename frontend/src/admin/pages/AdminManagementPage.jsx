@@ -137,8 +137,8 @@ const configs = {
       ['location', 'Location', 'companyLocation'],
       ['address', 'Full address', 'textarea'],
       ['jobs', 'Open jobs', 'number'],
-      ['documents', 'Documents status'],
-      ['status', 'Status', 'careerJobStatus'],
+      ['documents', 'Documents status', 'companyDocuments'],
+      ['status', 'Status', 'companyStatus'],
     ],
     required: [],
     transform: (form) => ({
@@ -148,6 +148,7 @@ const configs = {
       gstNumber: String(form.gstNumber || '').trim().toUpperCase(),
       location: formatJobLocation(form),
       jobs: Number(form.jobs || 0),
+      documents: String(form.documents || '').trim() || 'Review',
       badge: form.name?.slice(0, 2).toUpperCase(),
     }),
   },
@@ -756,6 +757,8 @@ const fieldOptions = {
   faqCategory: ['General', 'Candidate', 'Recruiter', 'Jobs', 'Applications', 'Payments', 'Account', 'Support'],
   faqStatus: ['Active', 'Inactive'],
   subscriberStatus: ['Subscribed', 'Unsubscribed'],
+  companyDocuments: ['Review', 'Missing', 'Verified'],
+  companyStatus: ['Pending', 'Active', 'Blocked'],
   careerJobStatus: ['Active', 'Inactive', 'Closed'],
   careerJobType: ['Full Time', 'Part Time', 'Contract', 'Internship'],
   careerWorkMode: ['Remote', 'Hybrid', 'On-site'],
@@ -1898,6 +1901,7 @@ function getInitialForm(type, companyOptions = []) {
       name: '',
       industry: '',
       jobs: 0,
+      documents: 'Review',
       status: 'Pending',
       address: '',
     }
@@ -3819,6 +3823,8 @@ function CrudModal({ companyOptions, companyRows, config, form, isCreate, onChan
             <SelectWithLabel key={key} label={label} onChange={(value) => onChange(key, value)} options={fieldOptions.careerJobType} value={form[key] || fieldOptions.careerJobType[0]} />
           ) : fieldType === 'careerWorkMode' ? (
             <SelectWithLabel key={key} label={label} onChange={(value) => onChange(key, value)} options={fieldOptions.careerWorkMode} value={form[key] || fieldOptions.careerWorkMode[1]} />
+          ) : ['companyDocuments', 'companyStatus'].includes(fieldType) ? (
+            <SelectWithLabel key={key} label={label} onChange={(value) => onChange(key, value)} options={fieldOptions[fieldType]} value={form[key] || fieldOptions[fieldType][0]} />
           ) : fieldType === 'careerJobStatus' ? (
             <SelectWithLabel key={key} label={label} onChange={(value) => onChange(key, value)} options={fieldOptions.careerJobStatus} value={form[key] || fieldOptions.careerJobStatus[0]} />
           ) : fieldType === 'policyPlacement' ? (

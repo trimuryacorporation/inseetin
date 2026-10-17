@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { Quote, Star, UsersRound } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Quote, Star, UsersRound } from 'lucide-react'
 import { api } from '../services/api'
 
 export function TestimonialSlider() {
@@ -44,6 +44,8 @@ export function TestimonialSlider() {
     if (active >= testimonials.length) setActive(0)
   }, [active, testimonials.length])
 
+  const dotStart = Math.max(0, Math.min(active - 3, testimonials.length - 7))
+  const visibleTestimonials = testimonials.slice(dotStart, dotStart + 7)
   const item = testimonials[active]
   const averageRating = testimonials.length
     ? (testimonials.reduce((total, testimonial) => total + Number(testimonial.rating || 5), 0) / testimonials.length).toFixed(1)
@@ -107,16 +109,21 @@ export function TestimonialSlider() {
               </motion.article>
             </AnimatePresence>
 
-            <div className="mt-5 flex flex-wrap justify-center gap-2">
-              {testimonials.map((testimonial, index) => (
+            <div className="mt-5 flex items-center justify-center gap-2" aria-label="Testimonial navigation">
+              <button type="button" aria-label="Previous testimonial" onClick={() => setActive(current => (current - 1 + testimonials.length) % testimonials.length)} className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-blue-700 transition hover:bg-blue-100 focus-visible:outline-2 focus-visible:outline-blue-600" disabled={testimonials.length <= 1}><ChevronLeft size={18} /></button>
+              {visibleTestimonials.map((testimonial, dotIndex) => {
+                const index = dotStart + dotIndex
+                return (
                 <button
                   aria-label={`Show testimonial from ${testimonial.name}`}
-                  className={`h-2.5 rounded-[7px] transition-all ${active === index ? 'w-8 bg-blue-600' : 'w-2.5 bg-slate-300 hover:bg-blue-300'}`}
+                  aria-current={active === index ? 'true' : undefined}
+                  className={`h-2.5 shrink-0 rounded-[7px] transition-all ${active === index ? 'w-8 bg-blue-600' : 'w-2.5 bg-slate-300 hover:bg-blue-300'}`}
                   key={testimonial._id || testimonial.name}
                   onClick={() => setActive(index)}
                   type="button"
                 />
-              ))}
+              )})}
+              <button type="button" aria-label="Next testimonial" onClick={() => setActive(current => (current + 1) % testimonials.length)} className="grid h-9 w-9 shrink-0 place-items-center rounded-full text-blue-700 transition hover:bg-blue-100 focus-visible:outline-2 focus-visible:outline-blue-600" disabled={testimonials.length <= 1}><ChevronRight size={18} /></button>
             </div>
           </div>
         ) : (
@@ -124,7 +131,7 @@ export function TestimonialSlider() {
             <UsersRound className="mx-auto text-blue-500" size={36} />
             <h3 className="mt-4 text-2xl font-black text-slate-950">No testimonials published yet</h3>
             <p className="mx-auto mt-2 max-w-xl text-sm font-semibold leading-6 text-slate-500">
-              When admin adds testimonials in MongoDB, they will appear automatically in this professional carousel.
+              Reviews from our community will appear here once published.
             </p>
           </div>
         )}

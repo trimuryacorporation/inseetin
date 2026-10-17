@@ -29,7 +29,7 @@
   "rewrites": [
     {
       "source": "/api/(.*)",
-      "destination": "/api?path=$1"
+      "destination": "https://cromgerozgar.onrender.com/api/$1"
     },
     {
       "source": "/((?!api/).*)",

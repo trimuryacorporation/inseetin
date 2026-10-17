@@ -21,7 +21,7 @@ const companySchema = new mongoose.Schema(
     rating: { type: String, default: '4.5' },
     accent: { type: String, default: 'from-blue-600 to-sky-400' },
     website: { type: String, default: '' },
-    documents: { type: String, enum: ['Missing', 'Review', 'Verified'], default: 'Review' },
+    documents: { type: String, enum: ['Missing', 'Review', 'Verified'], default: 'Review', set: (value) => typeof value === 'string' ? value.trim() || 'Review' : value == null ? 'Review' : value },
     status: { type: String, enum: ['Pending', 'Active', 'Blocked'], default: 'Pending' },
     plan: { type: String, default: 'Starter' },
   },
