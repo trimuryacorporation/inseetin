@@ -592,12 +592,12 @@ export function FreelancerProjectsPage() {
       </div>
 
       <div className="rounded-[7px] border border-slate-200 bg-white p-5 shadow-sm">
-        <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+        <div className="flex flex-col gap-4 2xl:flex-row 2xl:items-center 2xl:justify-between">
           <div>
             <h2 className="text-xl font-black text-slate-950">Project Directory</h2>
             <p className="mt-1 text-sm font-semibold text-slate-500">{visibleProjects.length} matching records from {projectRows.length} projects.</p>
           </div>
-          <div className="grid gap-3 sm:grid-cols-[minmax(220px,1fr)_150px_140px_140px_auto] lg:min-w-[760px]">
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-[minmax(180px,1fr)_repeat(3,minmax(100px,1fr))_auto]">
             <label className="flex min-h-11 items-center gap-3 rounded-[7px] border border-slate-200 bg-slate-50 px-4">
               <Search className="text-[#0057B8]" size={18} />
               <input className="w-full bg-transparent text-sm font-semibold outline-none" onChange={(event) => updateFilter(setQuery)(event.target.value)} placeholder="Search records" value={query} />

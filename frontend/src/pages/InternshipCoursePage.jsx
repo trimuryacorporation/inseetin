@@ -1,3 +1,4 @@
+import { useSiteBranding } from '../utils/siteBranding'
 import { Link } from 'react-router-dom'
 import { ArrowRight, BadgeCheck, BriefcaseBusiness, CheckCircle2, Clock3, IndianRupee, LockKeyhole, PlayCircle, ShieldCheck, Sparkles, UsersRound } from 'lucide-react'
 
@@ -12,10 +13,11 @@ const outcomes = [
   'Recorded internship course videos',
   'Practical assignments and checklists',
   'Certificate-ready completion flow',
-  'Lifetime access after purchase',
+  'Access according to the course plan',
 ]
 
 export function InternshipCoursePage() {
+  const branding = useSiteBranding()
   return (
     <main className="bg-slate-50">
       <section className="relative overflow-hidden bg-[#082347] px-4 py-10 text-white sm:px-6 lg:py-14">
@@ -50,12 +52,13 @@ export function InternshipCoursePage() {
                   </span>
                   <p className="mt-4 text-xl font-black">Internship Course Preview</p>
                   <p className="mt-1 text-sm font-semibold text-blue-50">Recorded lessons + practical tasks</p>
+                  {branding.coursePreviewUrl && <video className="mt-4 w-full rounded-lg" controls preload="metadata" src={branding.coursePreviewUrl} aria-label="Course preview" />}
                 </div>
               </div>
               <div className="mt-4 grid grid-cols-3 gap-2 text-center">
-                <Metric icon={Clock3} label="Hours" value="12+" />
+                <Metric icon={Clock3} label="Hours" value={branding.courseHours} />
                 <Metric icon={UsersRound} label="Level" value="Beginner" />
-                <Metric icon={BadgeCheck} label="Access" value="Lifetime" />
+                <Metric icon={BadgeCheck} label="Access" value={branding.courseAccess} />
               </div>
             </div>
           </div>
@@ -85,10 +88,10 @@ export function InternshipCoursePage() {
           <p className="inline-flex items-center gap-2 rounded-full bg-orange-50 px-3 py-1 text-xs font-black uppercase tracking-wide text-[#b85f00]">
             <Sparkles size={14} /> Limited Launch
           </p>
-          <h2 className="mt-4 text-2xl font-black text-slate-950">Internship Video Course</h2>
+          <h2 className="mt-4 text-2xl font-black text-slate-950">{branding.courseTitle}</h2>
           <div className="mt-4 flex items-end gap-1">
             <IndianRupee className="mb-2 text-[#ff8a00]" size={24} />
-            <span className="text-5xl font-black text-slate-950">999</span>
+            <span className="text-5xl font-black text-slate-950">{Number(branding.coursePrice || 0).toLocaleString()}</span>
             <span className="mb-2 text-sm font-bold text-slate-500">one-time</span>
           </div>
           <div className="mt-5 grid gap-3">

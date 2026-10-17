@@ -38,6 +38,11 @@ function normalizeSiteBrandingValue(body = {}) {
     appRating: String(body.appRating || '4.4').trim() || '4.4',
     appReviews: String(body.appReviews || '42K Reviews').trim() || '42K Reviews',
     appDownloads: String(body.appDownloads || '50L+').trim() || '50L+',
+    courseTitle: String(body.courseTitle || 'Internship Video Course').trim(),
+    coursePrice: /^\d+(\.\d{1,2})?$/.test(String(body.coursePrice ?? '999')) ? String(body.coursePrice ?? '999') : '999',
+    courseHours: String(body.courseHours || '12+').trim(),
+    courseAccess: String(body.courseAccess || 'Lifetime').trim(),
+    coursePreviewUrl: /^https?:\/\//i.test(String(body.coursePreviewUrl || '')) ? String(body.coursePreviewUrl).trim() : '',
   }
 }
 
@@ -95,4 +100,4 @@ const getPublicSocialLinks = asyncHandler(async (req, res) => {
   })
 })
 
-module.exports = { getPublicSiteBranding, getPublicSocialLinks, getSiteBranding, updateSiteBranding }
+module.exports = { getPublicSiteBranding, getPublicSocialLinks, getSiteBranding, updateSiteBranding, normalizeSiteBrandingValue }

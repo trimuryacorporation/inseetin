@@ -1,38 +1,18 @@
+import { useApiResource } from '../hooks/useApiResource'
+import { api } from '../services/api'
+import { createCategoryJobsPath, getJobsForCategory } from '../utils/categoryMatching'
 import {
   ArrowLeft,
   ArrowRight,
   BarChart3,
   BriefcaseBusiness,
   Building2,
-  Code2,
-  Headphones,
   Home,
-  Landmark,
-  Megaphone,
   Search,
-  ShieldCheck,
   UserRound,
   UsersRound,
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
-
-const stats = [
-  [Building2, '100+', 'Industries', 'blue'],
-  [BriefcaseBusiness, '50K+', 'Open Jobs', 'green'],
-  [UsersRound, '5K+', 'Hiring Companies', 'violet'],
-  [UserRound, '10L+', 'Active Candidates', 'orange'],
-]
-
-const industries = [
-  [Landmark, 'Banking & Finance', '2,450 Open Jobs', '320 Companies Hiring', 'blue'],
-  [Code2, 'IT & Software', '12,650 Open Jobs', '1,250 Companies Hiring', 'indigo'],
-  [ShieldCheck, 'Healthcare', '6,850 Open Jobs', '540 Companies Hiring', 'teal'],
-  [BarChart3, 'Sales & Business Development', '8,230 Open Jobs', '750 Companies Hiring', 'green'],
-  [Megaphone, 'Marketing & Advertising', '4,120 Open Jobs', '410 Companies Hiring', 'orange'],
-  [Headphones, 'BPO & Customer Support', '9,320 Open Jobs', '680 Companies Hiring', 'violet'],
-  [Home, 'Work From Home', '7,560 Open Jobs', '980 Companies Hiring', 'orange'],
-  [Building2, 'Government & Public Sector', '3,980 Open Jobs', '200 Companies Hiring', 'stone'],
-]
 
 const toneClasses = {
   blue: 'bg-blue-50 text-blue-600',
@@ -44,11 +24,20 @@ const toneClasses = {
   stone: 'bg-stone-50 text-stone-600',
 }
 
-function jobSearchPath(value) {
-  return `/jobs?q=${encodeURIComponent(value)}`
-}
-
 export function IndustriesPage() {
+  const { data: jobs, loading, error } = useApiResource(() => api.jobListings(), [], [])
+  const { data: categories } = useApiResource(() => api.listAll('categories', '?status=Active'), [], [])
+  const { data: summary } = useApiResource(() => api.portalSummary(), { counts: {} }, [])
+  const stats = [
+    [Building2, categories.length, 'Industries', 'blue'],
+    [BriefcaseBusiness, loading ? '?' : jobs.length, 'Open Jobs', 'green'],
+    [UsersRound, summary.counts?.companies ?? '?', 'Companies', 'violet'],
+    [UserRound, summary.counts?.candidates ?? '?', 'Candidates', 'orange'],
+  ]
+  const industries = categories.map((category) => {
+    const matching = getJobsForCategory(jobs, category.name)
+    return [BriefcaseBusiness, category.name, matching.length + ' Open Jobs', new Set(matching.map((job) => job.company)).size + ' Companies Hiring', 'blue']
+  })
   return (
     <main className="min-h-screen bg-[#f8fbff] py-3 sm:py-5">
       <div className="mx-auto max-w-7xl px-3 sm:px-6 lg:px-8">
@@ -71,7 +60,7 @@ export function IndustriesPage() {
                 Explore Industries & Career Paths
               </h1>
               <p className="mx-auto mt-2 max-w-md text-sm font-semibold leading-6 text-slate-500 sm:mx-0 sm:mt-3 sm:max-w-2xl">
-                Discover verified industry paths and thousands of job opportunities from top companies across India.
+                Discover industry paths and current job opportunities from top companies across India.
               </p>
               <div className="mt-4 grid grid-cols-2 gap-2 sm:mt-5 sm:flex sm:gap-3">
                 <Link
@@ -141,13 +130,15 @@ export function IndustriesPage() {
             </Link>
           </div>
 
+          {error && <p role="alert" className="mt-4 text-sm text-rose-700">{error}</p>}
+          {!loading && !industries.length && <p className="mt-4 text-sm text-slate-500">No industries available yet.</p>}
           <div className="mt-3 grid grid-cols-2 gap-3 sm:mt-4 sm:gap-4 lg:grid-cols-4">
             {industries.map(([Icon, title, jobs, companies, tone]) => (
               <Link
                 className="group flex h-full flex-col rounded-[10px] border border-blue-100 bg-white p-3 shadow-sm shadow-blue-100/50 transition hover:-translate-y-1 hover:shadow-xl hover:shadow-blue-100 sm:p-4"
                 key={title}
                 style={{ minHeight: 154 }}
-                to={jobSearchPath(title)}
+                to={createCategoryJobsPath({ name: title })}
               >
                 <span className={`grid h-10 w-10 place-items-center rounded-[9px] sm:h-12 sm:w-12 ${toneClasses[tone]}`}>
                   <Icon size={23} />

@@ -121,7 +121,7 @@ export function AuthModal({ initialMode = 'login', onClose, onSuccess, open }) {
 
   return (
     <div className="fixed inset-0 z-[120] grid place-items-center bg-slate-950/55 px-4 py-5 backdrop-blur-sm">
-      <div className="relative w-full max-w-[920px] overflow-hidden rounded-[8px] bg-white shadow-2xl shadow-slate-950/30">
+      <div className="relative max-h-[calc(100dvh-2.5rem)] w-full max-w-[920px] overflow-y-auto rounded-[8px] bg-white shadow-2xl shadow-slate-950/30">
         <button
           aria-label="Close auth modal"
           className="absolute right-4 top-4 z-10 grid h-10 w-10 place-items-center rounded-full bg-white/90 text-slate-500 shadow-sm ring-1 ring-slate-200 transition hover:text-[#ff8a00]"

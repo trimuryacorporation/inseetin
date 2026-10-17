@@ -2,30 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { ArrowLeft, ArrowRight, MapPin, Play, Rocket, Star, X } from 'lucide-react'
 import { Button } from '../../components/Button'
 import { api } from '../../services/api'
-import heroImage from '../../assets/enterprise-hiring-banner.png'
-import employerSuiteImage from '../../assets/employer-hiring-suite.png'
 import femaleRecruiterImage from '../../assets/recruiter-female-single.png'
-
-const fallbackVideos = [
-  {
-    companyName: 'K9HR Solutions',
-    quote: 'INSEET has simplified our hiring process and helped us connect with the right talent faster than ever.',
-    location: '150 Feet Ring Road, Rajkot, India',
-    duration: '02:45',
-    logoText: 'K9HR',
-    thumbnailUrl: heroImage,
-    tone: 'blue',
-  },
-  {
-    companyName: 'Jobsahihai Manpower Solution',
-    quote: 'The platform is easy to use, reliable, and has significantly improved our recruitment efficiency.',
-    location: 'Sector 73, Noida, India',
-    duration: '03:12',
-    logoText: 'JS',
-    thumbnailUrl: employerSuiteImage,
-    tone: 'orange',
-  },
-]
 
 export function RecruiterTestimonialsPage() {
   const [videos, setVideos] = useState([])
@@ -52,16 +29,12 @@ export function RecruiterTestimonialsPage() {
     }
   }, [])
 
-  const visibleVideos = useMemo(() => {
-    const source = videos.length ? videos : fallbackVideos
-    return source.map((item, index) => ({
-      ...fallbackVideos[index % fallbackVideos.length],
-      ...item,
-      quote: item.quote || item.message || item.description || fallbackVideos[index % fallbackVideos.length].quote,
-      duration: item.duration || item.videoDuration || fallbackVideos[index % fallbackVideos.length].duration,
-      tone: item.tone || fallbackVideos[index % fallbackVideos.length].tone,
-    }))
-  }, [videos])
+  const visibleVideos = useMemo(() => videos.map((item, index) => ({
+    ...item,
+    quote: item.quote || item.message || item.description || '',
+    duration: item.duration || item.videoDuration || '',
+    tone: item.tone || (index % 2 ? 'orange' : 'blue'),
+  })), [videos])
 
   return (
     <main className="overflow-hidden bg-[#f8fbff]">

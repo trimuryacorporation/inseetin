@@ -26,6 +26,9 @@ const { authorize, protect } = require('../middleware/authMiddleware')
 const router = express.Router()
 const accountRoles = ['Admin', 'staff', 'hiring', 'account team', 'recruiter', 'users', 'freelancer']
 
+router.use('/developer', require('./developerAdminRoutes').router)
+router.use('/integrations/v1', require('./developerIntegrationRoutes').createIntegrationRouter())
+
 router.get('/health', (req, res) => res.json({ success: true, message: 'INSEET API is running' }))
 router.use('/auth', authRoutes)
 router.use('/campaigns', campaignRoutes)

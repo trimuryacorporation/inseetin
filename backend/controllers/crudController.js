@@ -41,7 +41,7 @@ function crudController(Model, options = {}) {
 
         res.json({ success: true, data: items, pagination: { page, limit, total, pages: Math.ceil(total / limit) } })
       } catch (error) {
-        if (!options.safeGet) throw error
+        if (!options.safeGet || req.developerKey) throw error
         res.json({ success: true, data: [], pagination: { page, limit, total: 0, pages: 0 }, warning: error.message })
       }
     }),

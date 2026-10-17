@@ -1,0 +1,45 @@
+{
+  "checks": [
+    {
+      "name": "API Developer page loads for Admin",
+      "passed": true
+    },
+    {
+      "name": "Key creation submits chosen scopes",
+      "passed": true
+    },
+    {
+      "name": "Secret stays masked by default",
+      "passed": true
+    },
+    {
+      "name": "Dismiss removes secret from the page",
+      "passed": true
+    },
+    {
+      "name": "Editing can remove all write permissions",
+      "passed": true
+    },
+    {
+      "name": "Revoke calls the revoke endpoint",
+      "passed": true
+    },
+    {
+      "name": "Responsive API workspace at 375px",
+      "passed": true
+    },
+    {
+      "name": "Responsive API workspace at 768px",
+      "passed": true
+    },
+    {
+      "name": "Responsive API workspace at 1440px",
+      "passed": true
+    },
+    {
+      "name": "No browser runtime exceptions",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

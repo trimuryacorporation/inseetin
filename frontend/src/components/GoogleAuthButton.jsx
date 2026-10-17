@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useEffect, useId, useRef, useState } from 'react'
 import { Globe2 } from 'lucide-react'
 import { api } from '../services/api'
 
@@ -35,7 +35,7 @@ export function GoogleAuthButton({ disabled = false, iconOnly = false, label = '
   const [configLoaded, setConfigLoaded] = useState(Boolean(import.meta.env.VITE_GOOGLE_CLIENT_ID))
   const [ready, setReady] = useState(false)
   const [error, setError] = useState('')
-  const buttonId = useMemo(() => `google-btn-${Math.random().toString(36).slice(2)}`, [])
+  const buttonId = `google-btn-${useId().replace(/:/g, '')}`
 
   useEffect(() => {
     credentialRef.current = onCredential

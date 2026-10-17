@@ -15,10 +15,10 @@ export function RecruiterProfilePage() {
   const [profile, setProfile] = useState(() => ({
     name: user?.name || 'Recruiter',
     contactPerson: user?.name || '',
-    email: user?.email || 'recruiter@inseet.test',
+    email: user?.email || '',
     phone: '',
     location: 'India',
-    industry: 'Recruitment',
+    industry: '',
     companySize: '',
     website: '',
     logo: '',

@@ -18,23 +18,23 @@ import {
   UsersRound,
 } from 'lucide-react'
 import professionalPair from '../assets/hero-professional-pair.png'
-import { defaultHeroBrands, useSiteBranding } from '../utils/siteBranding'
+import { useSiteBranding } from '../utils/siteBranding'
 
-const popularCategories = [
-  ['Banking', Landmark, '2,450+', 'blue'],
-  ['Work From Home', Home, '3,120+', 'orange'],
-  ['HR', UsersRound, '1,850+', 'purple'],
-  ['Sales', BriefcaseBusiness, '2,980+', 'green'],
-  ['Accounting', PercentSquare, '1,670+', 'pink'],
-  ['Customer Support', Headphones, '1,560+', 'amber'],
-  ['Event Management', CalendarCheck, '980+', 'purple'],
-  ['IT', Globe2, '4,520+', 'green'],
-  ['SQL', Database, '2,210+', 'orange'],
-  ['Oracle', Banknote, '1,180+', 'pink'],
-  ['Graphic Design', Palette, '1,430+', 'blue'],
-  ['Digital Marketing', Megaphone, '2,760+', 'amber'],
+const defaultCategories = [
+  ['Banking', Landmark, '', 'blue'],
+  ['Work From Home', Home, '', 'orange'],
+  ['HR', UsersRound, '', 'purple'],
+  ['Sales', BriefcaseBusiness, '', 'green'],
+  ['Accounting', PercentSquare, '', 'pink'],
+  ['Customer Support', Headphones, '', 'amber'],
+  ['Event Management', CalendarCheck, '', 'purple'],
+  ['IT', Globe2, '', 'green'],
+  ['SQL', Database, '', 'orange'],
+  ['Oracle', Banknote, '', 'pink'],
+  ['Graphic Design', Palette, '', 'blue'],
+  ['Digital Marketing', Megaphone, '', 'amber'],
 ]
-const trendingSkills = [
+const defaultSkills = [
   ['React.js', Globe2, 'blue'],
   ['Node.js', BriefcaseBusiness, 'green'],
   ['Python', Code2, 'amber'],
@@ -42,19 +42,34 @@ const trendingSkills = [
   ['Digital Marketing', Megaphone, 'purple'],
   ['HR Management', UsersRound, 'pink'],
 ]
-const trendingJobs = [
-  ['Business Analyst', TrendingJobIcon, '8,500+ Jobs', 'purple'],
-  ['Digital Marketing', Megaphone, '6,200+ Jobs', 'orange'],
-  ['Software Developer', Code2, '15,600+ Jobs', 'green'],
-  ['HR Manager', UsersRound, '4,800+ Jobs', 'pink'],
-  ['Sales Manager', BriefcaseBusiness, '7,200+ Jobs', 'blue'],
+const defaultJobs = [
+  ['Business Analyst', TrendingJobIcon, '', 'purple'],
+  ['Digital Marketing', Megaphone, '', 'orange'],
+  ['Software Developer', Code2, '', 'green'],
+  ['HR Manager', UsersRound, '', 'pink'],
+  ['Sales Manager', BriefcaseBusiness, '', 'blue'],
 ]
 
-export function HeroBanner() {
+export function HeroBanner({ jobs = [], categories = [], companies = [], loading = false }) {
   const branding = useSiteBranding()
-  const trustedBrands = Array.isArray(branding.heroBrandNames) && branding.heroBrandNames.length
-    ? branding.heroBrandNames
-    : defaultHeroBrands
+  const trustedBrands = companies.length ? [...new Set(companies.map((company) => company.name).filter(Boolean))] : branding.heroBrandNames || []
+  const countLabel = (count) => loading ? 'Loading...' : String(count)
+  const matchingJobs = (label) => {
+    const term = label.toLowerCase()
+    return jobs.filter((job) => [job.title, job.department, job.industry, job.workMode, ...(Array.isArray(job.skills) ? job.skills : String(job.skills || '').split(','))].filter(Boolean).some((value) => String(value).toLowerCase().includes(term)) || (term === 'work from home' && String(job.workMode).toLowerCase() === 'remote')).length
+  }
+  const popularCategories = categories.length
+    ? categories.slice(0, 12).map((category, index) => [category.name, defaultCategories[index % defaultCategories.length][1], countLabel(matchingJobs(category.name)), defaultCategories[index % defaultCategories.length][3]])
+    : defaultCategories.map(([label, Icon, , tone]) => [label, Icon, countLabel(matchingJobs(label)), tone])
+  const skillCounts = new Map()
+  for (const job of jobs) {
+    const skills = Array.isArray(job.skills) ? job.skills : String(job.skills || '').split(',')
+    for (const skill of new Set(skills.map((value) => String(value).trim()).filter(Boolean))) skillCounts.set(skill, (skillCounts.get(skill) || 0) + 1)
+  }
+  const trendingSkills = [...skillCounts].sort((a, b) => b[1] - a[1]).slice(0, 6).map(([label], index) => [label, defaultSkills[index % defaultSkills.length][1], '', defaultSkills[index % defaultSkills.length][2]])
+  const roleCounts = new Map()
+  for (const job of jobs) if (job.title) roleCounts.set(job.title, (roleCounts.get(job.title) || 0) + 1)
+  const trendingJobs = [...roleCounts].sort((a, b) => b[1] - a[1]).slice(0, 5).map(([label, count], index) => [label, defaultJobs[index % defaultJobs.length][1], count + ' Jobs', defaultJobs[index % defaultJobs.length][3]])
 
   return (
     <section className="overflow-hidden bg-white">
@@ -98,8 +113,8 @@ export function HeroBanner() {
         <div className="bg-[#003d7c]">
           <div className="mx-auto flex max-w-7xl items-center gap-5 overflow-hidden px-4 py-3 sm:gap-10 sm:px-6 sm:py-5 lg:px-8">
             <div className="shrink-0 border-l-4 border-[#ff8a00] pl-3 sm:pl-5">
-              <p className="text-2xl font-black sm:text-3xl">10K+</p>
-              <p className="text-xs font-black sm:text-sm">Openings daily</p>
+              <p className="text-2xl font-black sm:text-3xl">{countLabel(jobs.length)}</p>
+              <p className="text-xs font-black sm:text-sm">Current openings</p>
             </div>
             <div className="min-w-0 flex-1 overflow-hidden">
               <div className="flex w-max items-center gap-10 [animation:marquee_18s_linear_infinite] sm:gap-16">
@@ -147,8 +162,8 @@ export function HeroBanner() {
         </div>
 
         <div className="mt-6 space-y-4 sm:mt-7">
-          <TrendingChipRow accent="blue" icon={Flame} subtitle="Top in-demand skills right now" title="Trending Skills" items={trendingSkills} />
-          <TrendingChipRow accent="orange" icon={RocketIcon} subtitle="Most hiring job roles across top companies" title="Trending Jobs in India" items={trendingJobs} withCounts />
+          {trendingSkills.length > 0 && <TrendingChipRow accent="blue" icon={Flame} subtitle="Top in-demand skills right now" title="Trending Skills" items={trendingSkills} />}
+          {trendingJobs.length > 0 && <TrendingChipRow accent="orange" icon={RocketIcon} subtitle="Most hiring job roles across top companies" title="Trending Jobs in India" items={trendingJobs} withCounts />}
         </div>
 
         <div className="mt-6 overflow-hidden rounded-[9px] border border-slate-200 bg-[white] text-slate-950 shadow-lg shadow-slate-200/60">
@@ -159,7 +174,7 @@ export function HeroBanner() {
             <div>
               <h3 className="text-lg font-black sm:text-xl">Ready to find your next opportunity?</h3>
               <p className="mt-1 max-w-2xl text-xs font-semibold leading-5 text-slate-500 sm:text-sm">
-                Explore thousands of verified jobs from top companies and take the next step in your career.
+                Explore current jobs from hiring companies and take the next step in your career.
               </p>
             </div>
             <a className="inline-flex h-10 items-center justify-center gap-2 rounded-[7px] border border-[#ff8a00] bg-[white] px-5 text-sm font-black text-black shadow-sm hover:bg-[#fff4e6]" href="/industries">

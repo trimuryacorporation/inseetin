@@ -857,13 +857,14 @@ function useToastMessageState() {
 
 export function AdminManagementPage({ fixedFilters = {}, type }) {
   const user = getStoredAdminUser()
-  const navigate = useNavigate()
   const allowedTypes = accessByRole[user?.role] || accessByRole.Admin
+  if (!allowedTypes.includes(type) || !configs[type]) return <Navigate replace to="/admin" />
+  return <ManagementContent key={type} fixedFilters={fixedFilters} type={type} />
+}
 
-  if (!allowedTypes.includes(type)) {
-    return <Navigate replace to="/admin" />
-  }
-
+function ManagementContent({ fixedFilters, type }) {
+  const user = getStoredAdminUser()
+  const navigate = useNavigate()
   const config = configs[type]
   const [searchParams, setSearchParams] = useSearchParams()
   const search = searchParams.get('search') || ''
@@ -1506,17 +1507,19 @@ export function AdminManagementPage({ fixedFilters = {}, type }) {
 
 export function AdminPaymentDetailPage() {
   const user = getStoredAdminUser()
+  const allowedTypes = accessByRole[user?.role] || accessByRole.Admin
+  if (!allowedTypes.includes('payments')) return <Navigate replace to="/admin" />
+  return <PaymentDetailContent />
+}
+
+function PaymentDetailContent() {
+  const user = getStoredAdminUser()
   const { paymentId } = useParams()
   const [payment, setPayment] = useState(null)
   const [recruiter, setRecruiter] = useState(null)
   const [recruiterUser, setRecruiterUser] = useState(null)
   const [message, setMessage] = useToastMessageState()
   const [loading, setLoading] = useState(true)
-  const allowedTypes = accessByRole[user?.role] || accessByRole.Admin
-
-  if (!allowedTypes.includes('payments')) {
-    return <Navigate replace to="/admin" />
-  }
 
   useEffect(() => {
     let mounted = true
@@ -1651,9 +1654,15 @@ export function AdminPaymentDetailPage() {
 
 export function RecruiterDocumentDetailPage() {
   const user = getStoredAdminUser()
+  const allowedTypes = accessByRole[user?.role] || accessByRole.Admin
+  if (!allowedTypes.includes('recruiterDocuments')) return <Navigate replace to="/admin" />
+  return <RecruiterDocumentDetailContent />
+}
+
+function RecruiterDocumentDetailContent() {
+  const user = getStoredAdminUser()
   const { documentId } = useParams()
   const navigate = useNavigate()
-  const allowedTypes = accessByRole[user?.role] || accessByRole.Admin
   const [documents, setDocuments] = useState([])
   const [selectedDocument, setSelectedDocument] = useState(null)
   const [message, setMessage] = useToastMessageState()
@@ -1662,10 +1671,6 @@ export function RecruiterDocumentDetailPage() {
   const [documentViewer, setDocumentViewer] = useState(null)
   const [remarkViewer, setRemarkViewer] = useState(null)
   const [confirmOpen, setConfirmOpen] = useState(false)
-
-  if (!allowedTypes.includes('recruiterDocuments')) {
-    return <Navigate replace to="/admin" />
-  }
 
   const loadDocuments = async () => {
     if (!documentId) return
@@ -2689,8 +2694,14 @@ const postedJobReviewActions = [
 
 export function RecruiterDetailPage() {
   const user = getStoredAdminUser()
-  const { recruiterId } = useParams()
   const allowedTypes = accessByRole[user?.role] || accessByRole.Admin
+  if (!allowedTypes.includes('employers')) return <Navigate replace to="/admin" />
+  return <RecruiterDetailContent />
+}
+
+function RecruiterDetailContent() {
+  const user = getStoredAdminUser()
+  const { recruiterId } = useParams()
   const [recruiter, setRecruiter] = useState(null)
   const [recruiterUser, setRecruiterUser] = useState(null)
   const [jobs, setJobs] = useState([])
@@ -2702,10 +2713,6 @@ export function RecruiterDetailPage() {
   const [jobReviewRemark, setJobReviewRemark] = useState('')
   const [message, setMessage] = useToastMessageState()
   const [loading, setLoading] = useState(true)
-
-  if (!allowedTypes.includes('employers')) {
-    return <Navigate replace to="/admin" />
-  }
 
   useEffect(() => {
     let mounted = true
@@ -5475,6 +5482,16 @@ export function AdminSEOBrandingPage() {
                     placeholder="https://example.com/favicon.ico"
                     value={form.faviconUrl}
                   />
+                </div>
+                <div className="rounded-lg border border-blue-100 bg-blue-50/50 p-4">
+                  <p className="text-xs font-black uppercase tracking-wide text-blue-700">Internship Course</p>
+                  <div className="mt-3 grid gap-4 sm:grid-cols-2">
+                    <LabeledInput label="Course Title" value={form.courseTitle || ''} onChange={(value) => update('courseTitle', value)} />
+                    <LabeledInput label="Price in INR" type="number" min="0" value={form.coursePrice ?? '999'} onChange={(value) => update('coursePrice', value)} />
+                    <LabeledInput label="Course Hours" value={form.courseHours || ''} onChange={(value) => update('courseHours', value)} />
+                    <LabeledInput label="Access Duration" value={form.courseAccess || ''} onChange={(value) => update('courseAccess', value)} />
+                    <LabeledInput label="Preview Video URL" type="url" value={form.coursePreviewUrl || ''} onChange={(value) => update('coursePreviewUrl', value)} />
+                  </div>
                 </div>
                 <LabeledInput label="SEO Title" onChange={(value) => update('seoTitle', value)} placeholder="INSEET - Jobs and Hiring" value={form.seoTitle} />
                 <div className="rounded-[7px] border border-blue-100 bg-blue-50/50 p-4">

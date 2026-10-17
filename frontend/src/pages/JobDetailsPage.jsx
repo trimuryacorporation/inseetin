@@ -40,7 +40,7 @@ export function JobDetailsPage({ onApply }) {
   const { data: apiJob } = useApiResource(async () => {
     if (shouldFetchById) return api.job(resolvedJobId)
 
-    const payload = await api.jobs('?sort=-createdAt&limit=100')
+    const payload = await api.jobListings('?sort=-createdAt')
     const jobs = Array.isArray(payload.data) ? payload.data : []
     return { data: findJobByRouteValue(jobs, routeValue) || fallbackJob }
   }, fallbackJob, [resolvedJobId, routeValue, shouldFetchById])
@@ -99,7 +99,7 @@ export function JobDetailsPage({ onApply }) {
     const loadSimilarJobs = async () => {
       setSimilarLoading(true)
       try {
-        const payload = await api.jobs('?sort=-createdAt&limit=100')
+        const payload = await api.jobListings('?sort=-createdAt')
         const list = Array.isArray(payload.data) ? payload.data : []
         const ranked = rankSimilarJobs(list, job)
         if (active) setSimilarJobs(ranked.slice(0, 3))

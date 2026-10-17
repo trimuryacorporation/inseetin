@@ -1,0 +1,787 @@
+{
+  "checks": [
+    {
+      "name": "Live role counts and titles render",
+      "passed": true
+    },
+    {
+      "name": "App popup auto-closes",
+      "passed": true
+    },
+    {
+      "name": "City and job-type inputs visible on mobile",
+      "passed": true
+    },
+    {
+      "name": "API failures show an error rather than empty jobs",
+      "passed": true
+    },
+    {
+      "name": "Tablet menu is reachable",
+      "passed": true
+    },
+    {
+      "name": "Tablet menu opens",
+      "passed": true
+    }
+  ],
+  "layout": [
+    {
+      "requestedPath": "/admin",
+      "width": 375,
+      "path": "/admin-dashboard",
+      "text": 676,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/users",
+      "width": 375,
+      "path": "/admin/users",
+      "text": 485,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/jobs",
+      "width": 375,
+      "path": "/admin/jobs",
+      "text": 522,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/companies",
+      "width": 375,
+      "path": "/admin/companies",
+      "text": 438,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/employers",
+      "width": 375,
+      "path": "/admin/employers",
+      "text": 513,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/recruiter-documents",
+      "width": 375,
+      "path": "/admin/recruiter-documents",
+      "text": 507,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/candidates",
+      "width": 375,
+      "path": "/admin/candidates",
+      "text": 464,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/applications",
+      "width": 375,
+      "path": "/admin/applications",
+      "text": 540,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/categories",
+      "width": 375,
+      "path": "/admin/categories",
+      "text": 366,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/faqs",
+      "width": 375,
+      "path": "/admin/faqs",
+      "text": 427,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/testimonials",
+      "width": 375,
+      "path": "/admin/testimonials",
+      "text": 433,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/seo-branding",
+      "width": 375,
+      "path": "/admin/seo-branding",
+      "text": 1048,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/projects",
+      "width": 375,
+      "path": "/admin/projects",
+      "text": 1187,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/hiring-team",
+      "width": 375,
+      "path": "/admin/hiring-team",
+      "text": 1403,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/payments/transactions",
+      "width": 375,
+      "path": "/admin/payments/transactions",
+      "text": 536,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-dashboard",
+      "width": 375,
+      "path": "/candidate-dashboard",
+      "text": 1067,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-profile",
+      "width": 375,
+      "path": "/candidate-profile",
+      "text": 1250,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-applied-jobs",
+      "width": 375,
+      "path": "/candidate-applied-jobs",
+      "text": 581,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-saved-jobs",
+      "width": 375,
+      "path": "/candidate-saved-jobs",
+      "text": 561,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-job-alerts",
+      "width": 375,
+      "path": "/candidate-job-alerts",
+      "text": 554,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-interview-invites",
+      "width": 375,
+      "path": "/candidate-interview-invites",
+      "text": 579,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-dashboard",
+      "width": 375,
+      "path": "/recruiter-dashboard",
+      "text": 1335,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-jobs",
+      "width": 375,
+      "path": "/recruiter-jobs",
+      "text": 479,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-profile",
+      "width": 375,
+      "path": "/recruiter-profile",
+      "text": 467,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-applications",
+      "width": 375,
+      "path": "/recruiter-applications",
+      "text": 691,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-find-resume",
+      "width": 375,
+      "path": "/recruiter-find-resume",
+      "text": 281,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-pricing",
+      "width": 375,
+      "path": "/recruiter-pricing",
+      "text": 1114,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/post-job",
+      "width": 375,
+      "path": "/post-job",
+      "text": 2658,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin",
+      "width": 768,
+      "path": "/admin-dashboard",
+      "text": 702,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/users",
+      "width": 768,
+      "path": "/admin/users",
+      "text": 511,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/jobs",
+      "width": 768,
+      "path": "/admin/jobs",
+      "text": 548,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/companies",
+      "width": 768,
+      "path": "/admin/companies",
+      "text": 464,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/employers",
+      "width": 768,
+      "path": "/admin/employers",
+      "text": 539,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/recruiter-documents",
+      "width": 768,
+      "path": "/admin/recruiter-documents",
+      "text": 533,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/candidates",
+      "width": 768,
+      "path": "/admin/candidates",
+      "text": 490,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/applications",
+      "width": 768,
+      "path": "/admin/applications",
+      "text": 566,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/categories",
+      "width": 768,
+      "path": "/admin/categories",
+      "text": 392,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/faqs",
+      "width": 768,
+      "path": "/admin/faqs",
+      "text": 453,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/testimonials",
+      "width": 768,
+      "path": "/admin/testimonials",
+      "text": 459,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/seo-branding",
+      "width": 768,
+      "path": "/admin/seo-branding",
+      "text": 1074,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/projects",
+      "width": 768,
+      "path": "/admin/projects",
+      "text": 1213,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/hiring-team",
+      "width": 768,
+      "path": "/admin/hiring-team",
+      "text": 1429,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/payments/transactions",
+      "width": 768,
+      "path": "/admin/payments/transactions",
+      "text": 562,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-dashboard",
+      "width": 768,
+      "path": "/candidate-dashboard",
+      "text": 1067,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-profile",
+      "width": 768,
+      "path": "/candidate-profile",
+      "text": 1250,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-applied-jobs",
+      "width": 768,
+      "path": "/candidate-applied-jobs",
+      "text": 581,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-saved-jobs",
+      "width": 768,
+      "path": "/candidate-saved-jobs",
+      "text": 561,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-job-alerts",
+      "width": 768,
+      "path": "/candidate-job-alerts",
+      "text": 554,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-interview-invites",
+      "width": 768,
+      "path": "/candidate-interview-invites",
+      "text": 579,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-dashboard",
+      "width": 768,
+      "path": "/recruiter-dashboard",
+      "text": 1405,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-jobs",
+      "width": 768,
+      "path": "/recruiter-jobs",
+      "text": 549,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-profile",
+      "width": 768,
+      "path": "/recruiter-profile",
+      "text": 537,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-applications",
+      "width": 768,
+      "path": "/recruiter-applications",
+      "text": 761,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-find-resume",
+      "width": 768,
+      "path": "/recruiter-find-resume",
+      "text": 351,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-pricing",
+      "width": 768,
+      "path": "/recruiter-pricing",
+      "text": 1184,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/post-job",
+      "width": 768,
+      "path": "/post-job",
+      "text": 2658,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin",
+      "width": 1280,
+      "path": "/admin-dashboard",
+      "text": 895,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/users",
+      "width": 1280,
+      "path": "/admin/users",
+      "text": 772,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/jobs",
+      "width": 1280,
+      "path": "/admin/jobs",
+      "text": 741,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/companies",
+      "width": 1280,
+      "path": "/admin/companies",
+      "text": 657,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/employers",
+      "width": 1280,
+      "path": "/admin/employers",
+      "text": 773,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/recruiter-documents",
+      "width": 1280,
+      "path": "/admin/recruiter-documents",
+      "text": 767,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/candidates",
+      "width": 1280,
+      "path": "/admin/candidates",
+      "text": 683,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/applications",
+      "width": 1280,
+      "path": "/admin/applications",
+      "text": 759,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/categories",
+      "width": 1280,
+      "path": "/admin/categories",
+      "text": 585,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/faqs",
+      "width": 1280,
+      "path": "/admin/faqs",
+      "text": 834,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/testimonials",
+      "width": 1280,
+      "path": "/admin/testimonials",
+      "text": 840,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/seo-branding",
+      "width": 1280,
+      "path": "/admin/seo-branding",
+      "text": 1455,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/projects",
+      "width": 1280,
+      "path": "/admin/projects",
+      "text": 1445,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/hiring-team",
+      "width": 1280,
+      "path": "/admin/hiring-team",
+      "text": 1622,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/admin/payments/transactions",
+      "width": 1280,
+      "path": "/admin/payments/transactions",
+      "text": 797,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-dashboard",
+      "width": 1280,
+      "path": "/candidate-dashboard",
+      "text": 2035,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-profile",
+      "width": 1280,
+      "path": "/candidate-profile",
+      "text": 2218,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-applied-jobs",
+      "width": 1280,
+      "path": "/candidate-applied-jobs",
+      "text": 1548,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-saved-jobs",
+      "width": 1280,
+      "path": "/candidate-saved-jobs",
+      "text": 1528,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-job-alerts",
+      "width": 1280,
+      "path": "/candidate-job-alerts",
+      "text": 1521,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/candidate-interview-invites",
+      "width": 1280,
+      "path": "/candidate-interview-invites",
+      "text": 1546,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-dashboard",
+      "width": 1280,
+      "path": "/recruiter-dashboard",
+      "text": 1491,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-jobs",
+      "width": 1280,
+      "path": "/recruiter-jobs",
+      "text": 635,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-profile",
+      "width": 1280,
+      "path": "/recruiter-profile",
+      "text": 623,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-applications",
+      "width": 1280,
+      "path": "/recruiter-applications",
+      "text": 847,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-find-resume",
+      "width": 1280,
+      "path": "/recruiter-find-resume",
+      "text": 437,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/recruiter-pricing",
+      "width": 1280,
+      "path": "/recruiter-pricing",
+      "text": 1270,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    },
+    {
+      "requestedPath": "/post-job",
+      "width": 1280,
+      "path": "/post-job",
+      "text": 2509,
+      "overflow": false,
+      "error": false,
+      "errors": []
+    }
+  ],
+  "issues": []
+}

@@ -6,18 +6,12 @@ import { Button } from '../components/Button'
 import { getStoredUser } from '../routes/authRouting'
 import { DashboardShell, Panel } from './CandidateDashboard'
 import { getSavedJobs } from '../utils/savedJobs'
-import { getCandidateProfileCompletion } from '../utils/candidateActivity'
+import { getAppliedJobs, getCandidateProfileCompletion } from '../utils/candidateActivity'
 import { api } from '../services/api'
+import { useApiResource } from '../hooks/useApiResource'
 import { createJobDetailPath } from '../utils/jobRoutes'
 
-const profileStats = [
-  ['Profile Strength', '86%'],
-  ['Applications', '12'],
-  ['Saved Jobs', '8'],
-  ['Interviews', '3'],
-]
-
-const defaultSkills = ['React', 'JavaScript', 'Node.js', 'UI Development', 'REST APIs', 'Team Collaboration']
+const defaultSkills = []
 
 const skillOptions = [
   'HTML', 'CSS', 'JavaScript', 'TypeScript', 'React', 'Next.js', 'Vue.js', 'Angular', 'Svelte', 'Tailwind CSS', 'Bootstrap', 'Material UI', 'Redux', 'Zustand',
@@ -67,24 +61,24 @@ const experienceOptions = [
 
 function getStoredCandidateProfile(user) {
   const fallback = {
-    name: user?.name || 'Demo Candidate',
-    email: user?.email || 'candidate@example.com',
-    phone: '+91 98765 43210',
-    location: 'Bengaluru, India',
+    name: user?.name || '',
+    email: user?.email || '',
+    phone: user?.phone || '',
+    location: '',
     locationScope: 'India',
     country: 'India',
     countryCode: 'IN',
-    state: 'Karnataka',
-    stateCode: 'KA',
-    city: 'Bengaluru',
+    state: '',
+    stateCode: '',
+    city: '',
     fullAddress: '',
-    headline: 'Frontend Developer',
+    headline: '',
     availability: 'Open to full-time roles',
-    experience: '3+ years',
-    preferredRole: 'React Developer',
-    workMode: ['Hybrid', 'Remote'],
-    expectedSalary: ['10-15 LPA'],
-    noticePeriod: ['30 days'],
+    experience: '',
+    preferredRole: '',
+    workMode: [],
+    expectedSalary: [],
+    noticePeriod: [],
     skills: defaultSkills,
     avatar: '',
     banner: '',
@@ -101,10 +95,10 @@ function getStoredCandidateProfile(user) {
       : merged.countryCode || Country.getAllCountries().find((country) => country.name === merged.country)?.isoCode || 'US'
     const country = Country.getCountryByCode(countryCode)
     const states = getStateOptions(countryCode)
-    const stateCode = merged.stateCode || states.find((state) => state.name === merged.state)?.isoCode || states[0]?.isoCode || ''
+    const stateCode = merged.stateCode || states.find((state) => state.name === merged.state)?.isoCode || ''
     const state = State.getStateByCodeAndCountry(stateCode, countryCode)
     const cities = getCityOptions(countryCode, stateCode)
-    const city = merged.city || cities[0]?.name || ''
+    const city = merged.city || ''
 
     return {
       ...merged,
@@ -127,6 +121,10 @@ export function CandidateProfilePage() {
   const user = getStoredUser()
   const [searchParams] = useSearchParams()
   const [profile, setProfile] = useState(() => getStoredCandidateProfile(user))
+  const { data: applications } = useApiResource(() => user?.email ? api.listAll('applications', `?candidateEmail=${encodeURIComponent(user.email)}`) : Promise.resolve({ data: [] }), getAppliedJobs(user), [user?.email])
+  const filledFields = ['name', 'email', 'phone', 'city', 'state', 'headline', 'experience', 'preferredRole', 'avatar', 'banner', 'skills', 'workMode'].filter((key) => Array.isArray(profile[key]) ? profile[key].length > 0 : Boolean(profile[key])).length
+  const profileStrength = Math.round(filledFields / 12 * 100)
+  const profileStats = [['Profile Strength', profileStrength + '%'], ['Applications', applications.length], ['Saved Jobs', getSavedJobs(user).length], ['Interviews', applications.filter((item) => item.status === 'Interview').length]]
   const [editing, setEditing] = useState(() => Boolean(searchParams.get('missing')))
   const [message, setMessage] = useState('')
   const [resumeUploading, setResumeUploading] = useState(false)
@@ -369,7 +367,7 @@ export function CandidateProfilePage() {
                 </div>
 
                 <div className="mt-5 h-3 overflow-hidden rounded-[7px] bg-slate-100">
-                  <div className="h-full w-[86%] rounded-[7px] bg-teal-500" />
+                  <div className="h-full rounded-[7px] bg-teal-500" style={{ width: `${profileStrength}%` }} />
                 </div>
                 {message && <p className="mt-4 rounded-[7px] bg-teal-50 p-3 text-sm font-black text-teal-700">{message}</p>}
                 {!completion.complete && (

@@ -27,7 +27,7 @@ const user = getStoredUser()
   useEffect(() => {
     const loadApplications = async () => {
       try {
-        const payload = await api.list('applications')
+        const payload = await api.listAll('applications', '?candidateEmail=' + encodeURIComponent(user?.email || ''))
         const list = Array.isArray(payload.data) ? payload.data : []
         setApplications(list.filter((item) => item.candidateEmail?.toLowerCase() === user?.email?.toLowerCase()))
       } catch {
@@ -63,7 +63,7 @@ const user = getStoredUser()
     const loadRecommendedJobs = async () => {
       setRecommendationsLoading(true)
       try {
-        const payload = await api.jobs('?sort=-createdAt&limit=100')
+        const payload = await api.jobListings('?sort=-createdAt')
         const list = Array.isArray(payload.data) ? payload.data : []
         const ranked = rankRecommendedJobs(list, candidateProfile, applications)
         if (active) setRecommendedJobs(ranked.slice(0, 4))

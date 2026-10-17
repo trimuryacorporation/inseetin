@@ -50,7 +50,7 @@ export function JobsPage({ onApply }) {
   const [locationDraft, setLocationDraft] = useState([])
   const [salaryModalOpen, setSalaryModalOpen] = useState(false)
   const [salaryDraft, setSalaryDraft] = useState([])
-  const { data: apiJobs } = useApiResource(() => api.jobListings('?sort=-createdAt'), { data: [] }, [])
+  const { data: apiJobs, loading, error } = useApiResource(() => api.jobListings('?sort=-createdAt'), [], [])
   const rawList = Array.isArray(apiJobs) ? apiJobs : apiJobs?.data || []
   const normalizedJobs = useMemo(() => rawList.map(normalizeJob), [rawList])
   const dynamicFilters = useMemo(() => buildDynamicFilters(normalizedJobs), [normalizedJobs])
@@ -59,7 +59,7 @@ export function JobsPage({ onApply }) {
   const selectedExperienceMax = Number(searchParams.get('experience') || searchParams.get('experienceMax') || 0)
   const selectedSalaryBands = useMemo(() => getParamList(searchParams, 'salaryBand'), [searchParams])
   const departmentFilter = dynamicFilters.find((filter) => filter.key === 'department') || { values: [], counts: {} }
-  const selectedFilters = useMemo(() => getSelectedFilters(searchParams, departmentFilter.values), [searchParams, departmentFilter.values.join('|')])
+  const selectedFilters = useMemo(() => getSelectedFilters(searchParams, departmentFilter.values), [searchParams, departmentFilter.values])
 
   const list = normalizedJobs.filter((job) => {
     const haystack = [
@@ -287,7 +287,7 @@ export function JobsPage({ onApply }) {
                 )}
               </div>
             </div>
-            {list.length ? (
+            {loading ? <p role="status" className="rounded-lg bg-white p-6 text-slate-500">Loading jobs...</p> : error ? <p role="alert" className="rounded-lg bg-rose-50 p-6 text-rose-700">{error}</p> : list.length ? (
               <div className="grid w-full max-w-full grid-cols-1 gap-4">
                 {list.map((job, index) => <JobCard denseMobile index={index + 1} job={job} key={job._id || job.id} onApply={onApply} premiumList />)}
               </div>

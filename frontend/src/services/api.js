@@ -238,6 +238,14 @@ async function openAuthorizedFile(path) {
 }
 
 export const api = {
+  developerBaseUrl: () => apiUrl('/integrations/v1'),
+  developerCatalog: () => apiRequest('/developer/catalog', { authRequired: true }),
+  developerKeys: () => apiRequest('/developer/keys', { authRequired: true }),
+  developerLogs: (page = 1) => apiRequest('/developer/logs?page=' + page, { authRequired: true }),
+  createDeveloperKey: (data) => apiRequest('/developer/keys', { method: 'POST', body: JSON.stringify(data), authRequired: true }),
+  updateDeveloperKey: (id, data) => apiRequest('/developer/keys/' + id, { method: 'PUT', body: JSON.stringify(data), authRequired: true }),
+  revokeDeveloperKey: (id) => apiRequest('/developer/keys/' + id, { method: 'DELETE', authRequired: true }),
+  developerOpenApi: () => apiRequest('/developer/openapi.json', { authRequired: true }),
   jobs: (params = '') => apiRequest(`/jobs${params}`),
   jobListings: (params = '?sort=-createdAt') => listAll('job-listings', params),
   job: (id) => apiRequest(`/jobs/${id}`),

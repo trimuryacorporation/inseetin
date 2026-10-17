@@ -84,7 +84,7 @@ export function ApplyModal({ job, onClose }) {
 
   return (
     <div className="fixed inset-0 z-[60] grid place-items-center bg-slate-900/30 p-4 backdrop-blur-sm">
-      <div className="w-full max-w-lg rounded-[7px] bg-white p-6 shadow-2xl">
+      <div className="max-h-[calc(100dvh-2rem)] w-full max-w-lg overflow-y-auto rounded-[7px] bg-white p-4 sm:p-6 shadow-2xl">
         <div className="flex items-start justify-between gap-4">
           <div>
             <p className="text-sm font-semibold text-blue-600">Apply to</p>

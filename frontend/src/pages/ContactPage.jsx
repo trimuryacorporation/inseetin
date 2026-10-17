@@ -191,8 +191,10 @@ function InfoLine({ icon: Icon, value }) {
 }
 
 function SocialButton({ item }) {
-  const Icon = getSocialIcon(item.platform || item.label)
-  const content = Icon ? <Icon size={22} /> : <span className="text-xl font-black lowercase">in</span>
+  const platform = String(item.platform || item.label || '').toLowerCase()
+  const content = platform.includes('telegram') ? <Send size={22} />
+    : platform.includes('chat') || platform.includes('whatsapp') ? <MessageCircle size={22} />
+      : platform.includes('linkedin') ? <span className="text-xl font-black lowercase">in</span> : <Share2 size={22} />
   const className = 'grid h-14 w-14 place-items-center rounded-[7px] border border-slate-200 bg-white text-[#006eea] shadow-sm transition hover:-translate-y-0.5 hover:border-blue-200 hover:bg-blue-50'
 
   if (item.url) {
@@ -208,12 +210,4 @@ function SocialButton({ item }) {
       {content}
     </span>
   )
-}
-
-function getSocialIcon(platform = '') {
-  const value = platform.toLowerCase()
-  if (value.includes('telegram')) return Send
-  if (value.includes('chat') || value.includes('whatsapp')) return MessageCircle
-  if (value.includes('linkedin')) return null
-  return Share2
 }

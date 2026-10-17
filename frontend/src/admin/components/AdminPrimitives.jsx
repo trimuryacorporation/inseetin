@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { Fragment, useEffect, useMemo, useState } from 'react'
+import { Fragment, useMemo, useState } from 'react'
 import { CheckCircle2, Download, Eye, FileSpreadsheet, FileText, Pencil, Plus, Search, Trash2, X } from 'lucide-react'
 
 export function AdminCard({ children, className = '' }) {
@@ -38,7 +38,7 @@ export function Toolbar({
         <h2 className="mt-1 text-2xl font-black text-slate-950 dark:text-white">{title}</h2>
         {subtitle && <p className="mt-1 text-sm font-semibold text-slate-500 dark:text-slate-400">{subtitle}</p>}
       </div>
-      <div className="mt-4 flex flex-col gap-2 sm:flex-row lg:mt-0">
+      <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:flex-wrap lg:mt-0">
         <label className="flex min-h-11 items-center gap-2 rounded-[7px] border border-slate-200 bg-white px-4 text-sm text-slate-500 shadow-sm dark:border-white/10 dark:bg-slate-800 dark:text-slate-300">
           <Search size={17} className="text-blue-600 dark:text-blue-300" />
           <input
@@ -67,25 +67,20 @@ export function Toolbar({
 }
 
 export function DataTable({ columns, rows, actions, expandedRowId, renderExpandedRow, onRowClick }) {
-  const [page, setPage] = useState(1)
+  const [requestedPage, setPage] = useState(1)
   const [pageSize, setPageSize] = useState(5)
   const pageCount = Math.max(1, Math.ceil(rows.length / pageSize))
+  const page = Math.min(requestedPage, pageCount)
+  const pageNumbers = [...new Set([1, ...Array.from({ length: 5 }, (_, index) => page + index - 2), pageCount])].filter((value) => value >= 1 && value <= pageCount).sort((a, b) => a - b)
   const start = rows.length ? (page - 1) * pageSize + 1 : 0
   const end = Math.min(page * pageSize, rows.length)
   const visibleRows = useMemo(() => rows.slice((page - 1) * pageSize, page * pageSize), [page, pageSize, rows])
 
-  useEffect(() => {
-    setPage(1)
-  }, [rows])
-
-  useEffect(() => {
-    if (page > pageCount) setPage(pageCount)
-  }, [page, pageCount])
 
   return (
     <AdminCard className="overflow-hidden p-0">
       <div className="overflow-x-auto">
-        <table className="min-w-full text-left text-sm">
+        <table aria-label="Records" className="min-w-full text-left text-sm">
           <thead className="bg-slate-50 text-xs uppercase tracking-wide text-slate-500 dark:bg-slate-800 dark:text-slate-400">
             <tr>
               {columns.map((column) => <th className="whitespace-nowrap px-5 py-4 font-black" key={column.key}>{column.label}</th>)}
@@ -123,13 +118,13 @@ export function DataTable({ columns, rows, actions, expandedRowId, renderExpande
       <div className="flex flex-col justify-between gap-3 border-t border-slate-100 bg-slate-50/60 px-5 py-4 dark:border-slate-800 dark:bg-slate-800/40 sm:flex-row sm:items-center">
         <div className="flex flex-wrap items-center gap-3">
           <p className="text-sm font-semibold text-slate-500 dark:text-slate-400">Showing {start}-{end} of {rows.length} records</p>
-          <select className="rounded-[7px] border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-600 outline-none dark:border-white/10 dark:bg-slate-800 dark:text-slate-200" onChange={(event) => setPageSize(Number(event.target.value))} value={pageSize}>
+          <select className="rounded-[7px] border border-slate-200 bg-white px-3 py-1.5 text-sm font-semibold text-slate-600 outline-none dark:border-white/10 dark:bg-slate-800 dark:text-slate-200" onChange={(event) => { setPageSize(Number(event.target.value)); setPage(1) }} value={pageSize}>
             {[5, 10, 20, 50].map((size) => <option key={size} value={size}>{size} / page</option>)}
           </select>
         </div>
         <div className="flex flex-wrap gap-2">
-          <button className="rounded-[7px] bg-white px-3 py-2 text-sm font-bold text-slate-600 ring-1 ring-slate-200 disabled:opacity-40 dark:bg-slate-800 dark:text-slate-200 dark:ring-white/10" disabled={page === 1} onClick={() => setPage((value) => Math.max(1, value - 1))} type="button">Prev</button>
-          {Array.from({ length: pageCount }, (_, index) => index + 1).map((pageNumber) => (
+          <button className="rounded-[7px] bg-white px-3 py-2 text-sm font-bold text-slate-600 ring-1 ring-slate-200 disabled:opacity-40 dark:bg-slate-800 dark:text-slate-200 dark:ring-white/10" disabled={page === 1} onClick={() => setPage(Math.max(1, page - 1))} type="button">Prev</button>
+          {pageNumbers.map((pageNumber) => (
             <button
               className={`grid h-9 w-9 place-items-center rounded-[7px] text-sm font-bold ${pageNumber === page ? 'bg-blue-600 text-white' : 'bg-white text-slate-600 ring-1 ring-slate-200 dark:bg-slate-800 dark:text-slate-200 dark:ring-white/10'}`}
               key={pageNumber}
@@ -139,7 +134,7 @@ export function DataTable({ columns, rows, actions, expandedRowId, renderExpande
               {pageNumber}
             </button>
           ))}
-          <button className="rounded-[7px] bg-white px-3 py-2 text-sm font-bold text-slate-600 ring-1 ring-slate-200 disabled:opacity-40 dark:bg-slate-800 dark:text-slate-200 dark:ring-white/10" disabled={page === pageCount} onClick={() => setPage((value) => Math.min(pageCount, value + 1))} type="button">Next</button>
+          <button className="rounded-[7px] bg-white px-3 py-2 text-sm font-bold text-slate-600 ring-1 ring-slate-200 disabled:opacity-40 dark:bg-slate-800 dark:text-slate-200 dark:ring-white/10" disabled={page === pageCount} onClick={() => setPage(Math.min(pageCount, page + 1))} type="button">Next</button>
         </div>
       </div>
     </AdminCard>
@@ -193,10 +188,10 @@ export function AdminModal({ open, title, children, onClose }) {
   return (
     <AnimatePresence>
       {open && (
-        <motion.div className="fixed inset-0 z-[90] grid place-items-center bg-slate-900/30 p-4 backdrop-blur-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
+        <motion.div className="fixed inset-0 z-[90] grid place-items-center bg-slate-900/30 px-4 pb-4 pt-14 backdrop-blur-sm" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
           <div className="relative w-full max-w-3xl">
-            <button className="absolute -right-3 -top-12 grid h-10 w-10 place-items-center rounded-[7px] bg-white text-slate-600 shadow-xl ring-1 ring-slate-200 hover:bg-slate-50" onClick={onClose} type="button"><X size={18} /></button>
-            <motion.div className="max-h-[90vh] w-full overflow-y-auto rounded-[7px] bg-white p-6 shadow-2xl" initial={{ y: 24, scale: 0.96 }} animate={{ y: 0, scale: 1 }} exit={{ y: 24, scale: 0.96 }}>
+            <button className="absolute right-0 -top-11 grid h-10 w-10 place-items-center rounded-[7px] bg-white text-slate-600 shadow-xl ring-1 ring-slate-200 hover:bg-slate-50" onClick={onClose} type="button"><X size={18} /></button>
+            <motion.div className="max-h-[calc(100dvh-5rem)] w-full overflow-y-auto rounded-[7px] bg-white p-6 shadow-2xl" initial={{ y: 24, scale: 0.96 }} animate={{ y: 0, scale: 1 }} exit={{ y: 24, scale: 0.96 }}>
             <div className="mb-5">
               <h3 className="text-2xl font-black text-slate-950">{title}</h3>
             </div>

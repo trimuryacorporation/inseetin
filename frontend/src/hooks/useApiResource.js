@@ -10,7 +10,8 @@ export function useApiResource(fetcher, fallback, deps = []) {
     let ignore = false
 
     setLoading(true)
-    fetcher()
+    setError('')
+    Promise.resolve().then(fetcher)
       .then((payload) => {
         if (!ignore) {
           setData(payload.data ?? fallback)
@@ -20,7 +21,7 @@ export function useApiResource(fetcher, fallback, deps = []) {
       .catch((err) => {
         if (!ignore) {
           setData(fallback)
-          setError(err.message)
+          setError(err?.message || 'Data could not be loaded.')
         }
       })
       .finally(() => {

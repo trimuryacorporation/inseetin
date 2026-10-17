@@ -24,6 +24,7 @@ import {
 } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { Button } from '../components/Button'
+import { SupportChatButton } from '../components/SupportChat'
 import { FreelancerCard } from '../components/FreelancerCard'
 import { useApiResource } from '../hooks/useApiResource'
 import { getStoredUser } from '../routes/authRouting'
@@ -43,20 +44,34 @@ const navItems = [
 export function EmployerDashboard() {
   const user = getStoredUser()
   const [freelancerQuery, setFreelancerQuery] = useState('')
-  const { data } = useApiResource(() => api.employerDashboard(user?.email), { metrics: {}, jobs: [], applications: [], shortlistedApplications: [] }, [user?.email])
-  const { data: freelancerData } = useApiResource(() => api.freelancerProfiles(), { data: [] }, [])
+  const [revision, setRevision] = useState(0)
+  const scopedQuery = '?recruiterEmail=' + encodeURIComponent(user?.email || '')
+  const { data: allJobs } = useApiResource(() => api.listAll('jobs', scopedQuery), [], [user?.email, revision])
+  const { data: allApplications } = useApiResource(() => api.listAll('applications', scopedQuery), [], [user?.email, revision])
+  const { data: employerRows } = useApiResource(() => api.listAll('employers', '?businessEmail=' + encodeURIComponent(user?.email || '')), [], [user?.email])
+  const company = employerRows.find((row) => row.businessEmail === user?.email) || {}
+  const { data: payments } = useApiResource(() => api.listAll('payments', scopedQuery), [], [user?.email])
+  const updateApplication = async (candidate, status) => {
+    try {
+      await api.update('applications', candidate._id || candidate.id, { status })
+      setRevision((value) => value + 1)
+      toast('Application updated to ' + status)
+    } catch (error) { window.dispatchEvent(new CustomEvent('portalToast', { detail: { message: error.message || 'Application update failed', type: 'error' } })) }
+  }
+  const { data } = useApiResource(() => api.employerDashboard(user?.email), { metrics: {}, jobs: [], applications: [], shortlistedApplications: [] }, [user?.email, revision])
+  const { data: freelancerData } = useApiResource(() => api.freelancerProfiles(), [], [])
 
   const metrics = data.metrics || {}
-  const jobs = Array.isArray(data.jobs) ? data.jobs : []
-  const applications = Array.isArray(data.applications) ? data.applications : []
-  const shortlistedApplications = Array.isArray(data.shortlistedApplications) ? data.shortlistedApplications : []
-  const freelancerProfiles = Array.isArray(freelancerData.data) ? freelancerData.data : []
+  const jobs = Array.isArray(allJobs) ? allJobs : []
+  const applications = Array.isArray(allApplications) ? allApplications : []
+  const shortlistedApplications = applications.filter((item) => item.status === 'Shortlisted')
+  const freelancerProfiles = Array.isArray(freelancerData) ? freelancerData : []
   const conversations = applications.slice(0, 6).map((item) => ({
     name: item.candidateName || item.name || item.candidateEmail || 'Candidate',
     status: item.status || 'Review',
     message: item.coverNote || item.jobTitle || 'Application update available.',
   }))
-  const invoices = []
+  const invoices = Array.isArray(payments) ? payments : []
   const activity = [
     ...jobs.slice(0, 2).map((job) => `${job.title || 'Job'} status: ${job.accountDepartmentStatus || job.status || 'Pending'}`),
     ...applications.slice(0, 2).map((item) => `${item.candidateName || item.name || 'Candidate'} applied for ${item.jobTitle || 'a job'}`),
@@ -69,12 +84,12 @@ export function EmployerDashboard() {
   }, [freelancerProfiles, freelancerQuery])
 
   const stats = [
-    { label: 'Posted Jobs', value: metrics.totalJobs ?? jobs.length, icon: BriefcaseBusiness, trend: '+12%' },
-    { label: 'Active Jobs', value: jobs.filter((job) => ['Open', 'Active'].includes(job.status || job.accountDepartmentStatus)).length, icon: FilePlus2, trend: '+8%' },
-    { label: 'Applications', value: metrics.activeApplications ?? applications.length, icon: UsersRound, trend: '+24%' },
-    { label: 'Shortlisted', value: metrics.shortlistedCandidates ?? shortlistedApplications.length, icon: Star, trend: '+16%' },
-    { label: 'Hired Talent', value: 8, icon: ShieldCheck, trend: '+5%' },
-    { label: 'Pending Review', value: applications.filter((item) => ['New', 'Review'].includes(item.status)).length, icon: CheckCircle2, trend: 'Today' },
+    { label: 'Posted Jobs', value: metrics.totalJobs ?? jobs.length, icon: BriefcaseBusiness, trend: 'Live' },
+    { label: 'Active Jobs', value: jobs.filter((job) => ['Open', 'Active'].includes(job.status || job.accountDepartmentStatus)).length, icon: FilePlus2, trend: 'Live' },
+    { label: 'Applications', value: metrics.activeApplications ?? applications.length, icon: UsersRound, trend: 'Live' },
+    { label: 'Shortlisted', value: metrics.shortlistedCandidates ?? shortlistedApplications.length, icon: Star, trend: 'Live' },
+    { label: 'Hired Talent', value: applications.filter((item) => ['Hired', 'Selected'].includes(item.status)).length, icon: ShieldCheck, trend: 'Live' },
+    { label: 'Pending Review', value: applications.filter((item) => ['New', 'Review'].includes(item.status)).length, icon: CheckCircle2, trend: 'Live' },
   ]
 
   return (
@@ -97,15 +112,15 @@ export function EmployerDashboard() {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-xs font-black uppercase tracking-[0.16em] text-blue-200">Pipeline Health</p>
-                    <p className="mt-3 text-5xl font-black">84%</p>
+                    <p className="mt-3 text-5xl font-black">{applications.length ? Math.round(shortlistedApplications.length / applications.length * 100) : 0}%</p>
                   </div>
                   <div className="grid h-16 w-16 place-items-center rounded-[7px] bg-white/10">
                     <UsersRound size={30} />
                   </div>
                 </div>
-                <div className="mt-6 grid grid-cols-4 gap-2">
-                  {[46, 72, 58, 92].map((height, index) => (
-                    <span className="self-end rounded-[7px] bg-[#0057B8]" key={index} style={{ height }} />
+                <div className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4">
+                  {['New', 'Reviewed', 'Shortlisted', 'Selected'].map((status, index) => (
+                    <span className="self-end rounded-[7px] bg-[#0057B8]" key={index} title={`${status}: ${applications.filter((item) => item.status === status).length}`} style={{ height: Math.max(4, applications.filter((item) => item.status === status).length / Math.max(1, applications.length) * 100) }} />
                   ))}
                 </div>
               </div>
@@ -125,7 +140,7 @@ export function EmployerDashboard() {
             </Panel>
             <Panel title="Performance Snapshot">
               <div className="grid gap-3 sm:grid-cols-2">
-                {['12.4k profile views', '428 applications', '34% shortlist rate', '18h avg response'].map((item) => (
+                {[`${jobs.length} posted jobs`, `${applications.length} applications`, `${applications.length ? Math.round(shortlistedApplications.length / applications.length * 100) : 0}% shortlist rate`, `${applications.filter((item) => item.status === 'Selected').length} selected candidates`].map((item) => (
                   <div className="rounded-[7px] border border-slate-200 bg-slate-50 p-4" key={item}>
                     <p className="text-lg font-black text-slate-950">{item.split(' ')[0]}</p>
                     <p className="text-xs font-black uppercase tracking-wide text-slate-400">{item.replace(item.split(' ')[0], '').trim()}</p>
@@ -140,7 +155,7 @@ export function EmployerDashboard() {
               <JobManagement jobs={jobs} />
             </Panel>
             <Panel title="Candidate Management">
-              <CandidateManagement applications={applications} />
+              <CandidateManagement applications={applications} onStatusChange={updateApplication} />
             </Panel>
           </section>
 
@@ -155,14 +170,20 @@ export function EmployerDashboard() {
                   <FreelancerCard
                     freelancer={freelancer}
                     key={freelancer._id || freelancer.id}
-                    onHire={() => toast(`${freelancer.name} invited to job`)}
-                    onShortlist={() => toast(`${freelancer.name} saved`)}
+                    onHire={() => window.location.assign('/post-job')}
+                    onShortlist={() => {
+                      const key = 'savedFreelancers:' + (user?.id || user?.email)
+                      let saved
+                      try { saved = JSON.parse(localStorage.getItem(key) || '[]') } catch { saved = [] }
+                      localStorage.setItem(key, JSON.stringify([...new Set([...(Array.isArray(saved) ? saved : []), freelancer._id || freelancer.id])]))
+                      toast(freelancer.name + ' saved on this device')
+                    }}
                   />
                 ))}
               </div>
             </Panel>
             <Panel title="Messages / Chat">
-              <ChatPreview conversations={conversations} />
+              <div className="grid gap-3">{conversations.map((item, index) => <p className="rounded-lg bg-slate-50 p-3 text-sm text-slate-600" key={index}>{item.name}: {item.message}</p>)}<SupportChatButton>Contact hiring support</SupportChatButton></div>
             </Panel>
           </section>
 
@@ -171,7 +192,7 @@ export function EmployerDashboard() {
               <PaymentsPanel invoices={invoices} />
             </Panel>
             <Panel title="Company Profile">
-              <CompanyProfile user={user} totalJobs={metrics.totalJobs ?? jobs.length} />
+              <CompanyProfile company={company} user={user} totalJobs={metrics.totalJobs ?? jobs.length} />
             </Panel>
           </section>
 
@@ -287,29 +308,31 @@ function RecentActivity({ activity = [] }) {
 
 function QuickActions() {
   const items = [
-    { label: 'Review applications', icon: UsersRound },
-    { label: 'Open messages', icon: MessageCircle },
-    { label: 'Check payments', icon: WalletCards },
+    { label: 'Review applications', icon: UsersRound, to: '/recruiter-applications' },
+    { label: 'Open messages', icon: MessageCircle, to: '/recruiter/support' },
+    { label: 'Check payments', icon: WalletCards, to: '/recruiter-pricing' },
   ]
   return (
     <div className="grid gap-3 sm:grid-cols-2">
-      {items.map(({ icon: Icon, label, onClick }) => (
-        <button className="flex min-h-24 flex-col items-start justify-between rounded-[7px] border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-[#0057B8]/30 hover:bg-white hover:shadow-md hover:shadow-[#0057B8]/10" key={label} onClick={onClick} type="button">
+      {items.map(({ icon: Icon, label, to }) => (
+        <Link className="flex min-h-24 flex-col items-start justify-between rounded-[7px] border border-slate-200 bg-slate-50 p-4 text-left transition hover:border-[#0057B8]/30 hover:bg-white hover:shadow-md hover:shadow-[#0057B8]/10" key={label} to={to}>
           <Icon className="text-[#0057B8]" size={20} />
           <span className="font-black text-slate-800">{label}</span>
-        </button>
+        </Link>
       ))}
     </div>
   )
 }
 
 function JobManagement({ jobs }) {
+  const [query, setQuery] = useState('')
+  const filteredJobs = jobs.filter((job) => [job.title, job.company, job.type, job.location].join(' ').toLowerCase().includes(query.trim().toLowerCase()))
   return (
     <div>
       <div className="mb-4 flex flex-col gap-3 sm:flex-row">
         <label className="flex min-h-11 flex-1 items-center gap-3 rounded-[7px] border border-slate-200 bg-slate-50 px-4">
           <Search className="text-[#0057B8]" size={17} />
-          <input className="w-full bg-transparent text-sm font-semibold outline-none" placeholder="Search and filter jobs" />
+          <input className="w-full bg-transparent text-sm font-semibold outline-none" aria-label="Search posted jobs" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Search and filter jobs" />
         </label>
       </div>
       <div className="overflow-x-auto rounded-[7px] border border-slate-200">
@@ -318,7 +341,7 @@ function JobManagement({ jobs }) {
             <tr>{['Job title', 'Type', 'Location', 'Budget', 'Applications', 'Status', 'Actions'].map((item) => <th className="px-4 py-3" key={item}>{item}</th>)}</tr>
           </thead>
           <tbody className="divide-y divide-slate-100 bg-white">
-            {jobs.map((job) => (
+            {filteredJobs.map((job) => (
               <tr className="transition hover:bg-slate-50" key={job._id || job.title}>
                 <td className="px-4 py-4 font-black text-slate-950">{job.title}</td>
                 <td className="px-4 py-4 font-bold text-slate-600">{job.type || '-'}</td>
@@ -326,7 +349,7 @@ function JobManagement({ jobs }) {
                 <td className="px-4 py-4 font-bold text-slate-600">{job.budget || '-'}</td>
                 <td className="px-4 py-4 font-black text-[#0057B8]">{job.applicationsCount || 0}</td>
                 <td className="px-4 py-4"><StatusBadge status={job.status || job.accountDepartmentStatus || 'Active'} /></td>
-                <td className="px-4 py-4"><button className="grid h-9 w-9 place-items-center rounded-[7px] border border-slate-200 bg-white text-slate-600" type="button"><MoreHorizontal size={17} /></button></td>
+                <td className="px-4 py-4"><Link aria-label="Review posted job" className="grid h-9 w-9 place-items-center rounded-[7px] border border-slate-200 bg-white text-slate-600" to="/recruiter-jobs"><MoreHorizontal size={17} /></Link></td>
               </tr>
             ))}
           </tbody>
@@ -336,7 +359,7 @@ function JobManagement({ jobs }) {
   )
 }
 
-function CandidateManagement({ applications }) {
+function CandidateManagement({ applications, onStatusChange }) {
   return (
     <div className="grid gap-3">
       {applications.map((candidate) => (
@@ -352,13 +375,13 @@ function CandidateManagement({ applications }) {
                 <StatusBadge status={candidate.status || 'Review'} />
               </div>
               <div className="mt-3 flex flex-wrap gap-2">
-                {(candidate.skills || ['Communication', 'Remote Work']).map((skill) => <span className="rounded-[7px] bg-slate-100 px-3 py-1 text-xs font-black text-slate-600" key={skill}>{skill}</span>)}
+                {normalizeSkills(candidate.skills).map((skill) => <span className="rounded-[7px] bg-slate-100 px-3 py-1 text-xs font-black text-slate-600" key={skill}>{skill}</span>)}
               </div>
               <div className="mt-4 flex flex-wrap gap-2">
-                <button className="job-card-details-link px-4" type="button"><FileText size={16} /> Resume</button>
-                <Button onClick={() => toast('Candidate shortlisted')}>Shortlist</Button>
-                <button className="rounded-[7px] border border-rose-200 bg-white px-4 py-2 text-sm font-black text-rose-700" type="button">Reject</button>
-                <button className="rounded-[7px] border border-emerald-200 bg-white px-4 py-2 text-sm font-black text-emerald-700" type="button">Hire</button>
+                <Link className="job-card-details-link px-4" to="/recruiter-applications"><FileText size={16} /> Review application</Link>
+                <Button onClick={() => onStatusChange(candidate, 'Shortlisted')}>Shortlist</Button>
+                <button className="rounded-[7px] border border-rose-200 bg-white px-4 py-2 text-sm font-black text-rose-700" onClick={() => onStatusChange(candidate, 'Rejected')} type="button">Reject</button>
+                <button className="rounded-[7px] border border-emerald-200 bg-white px-4 py-2 text-sm font-black text-emerald-700" onClick={() => onStatusChange(candidate, 'Selected')} type="button">Hire</button>
               </div>
             </div>
           </div>
@@ -368,58 +391,15 @@ function CandidateManagement({ applications }) {
   )
 }
 
-function ChatPreview({ conversations = [] }) {
-  const [selected, setSelected] = useState(conversations[0] || null)
-
-  useEffect(() => {
-    if (!selected && conversations[0]) setSelected(conversations[0])
-    if (selected && !conversations.some((item) => item.name === selected.name)) setSelected(conversations[0] || null)
-  }, [conversations, selected])
-
-  if (!conversations.length || !selected) {
-    return <p className="rounded-[7px] border border-dashed border-slate-300 bg-white p-5 text-sm font-bold text-slate-500">No candidate conversations yet.</p>
-  }
-
-  return (
-    <div className="grid overflow-hidden rounded-[7px] border border-slate-200 lg:grid-cols-[260px_1fr]">
-      <div className="border-b border-slate-200 bg-slate-50 p-3 lg:border-b-0 lg:border-r">
-        {conversations.map((item) => (
-          <button className={`mb-2 w-full rounded-[7px] p-3 text-left ${selected.name === item.name ? 'bg-white shadow-sm' : 'hover:bg-white/70'}`} key={item.name} onClick={() => setSelected(item)} type="button">
-            <p className="font-black text-slate-900">{item.name}</p>
-            <p className={`mt-1 text-xs font-black ${item.status === 'Online' ? 'text-[#3E9B28]' : 'text-slate-400'}`}>{item.status}</p>
-          </button>
-        ))}
-      </div>
-      <div className="p-4">
-        <div className="mb-4 flex items-center justify-between">
-          <div>
-            <p className="font-black text-slate-950">{selected.name}</p>
-            <p className="text-xs font-bold text-[#3E9B28]">{selected.status}</p>
-          </div>
-          <MessageCircle className="text-[#0057B8]" />
-        </div>
-        <div className="grid gap-3">
-          <p className="max-w-[82%] rounded-[7px] bg-slate-100 p-3 text-sm font-semibold text-slate-600">{selected.message}</p>
-          <p className="ml-auto max-w-[82%] rounded-[7px] bg-[#0057B8] p-3 text-sm font-semibold text-white">Thanks, I will review and share next steps.</p>
-        </div>
-        <div className="mt-4 flex gap-2">
-          <input className="input py-3" placeholder="Type a message..." />
-          <Button>Send</Button>
-        </div>
-      </div>
-    </div>
-  )
-}
-
 function PaymentsPanel({ invoices = [] }) {
   return (
     <div className="grid gap-4 lg:grid-cols-[300px_1fr]">
       <div className="rounded-[7px] bg-slate-950 p-5 text-white">
-        <p className="text-xs font-black uppercase tracking-wide text-blue-200">Hiring Budget</p>
-        <p className="mt-3 text-4xl font-black">INR 1.2L</p>
+        <p className="text-xs font-black uppercase tracking-wide text-blue-200">Recorded Payments</p>
+        <p className="mt-3 text-4xl font-black">INR {invoices.reduce((total, invoice) => total + Number(String(invoice.amount || 0).replace(/[^0-9.]/g, '')), 0).toLocaleString()}</p>
         <div className="mt-5 grid gap-2">
-          {['Advance paid', 'Milestone pending', 'Final release'].map((item, index) => (
-            <div className="rounded-[7px] bg-white/10 p-3 text-sm font-black" key={item}>{index + 1}. {item}</div>
+          {['Paid', 'Pending', 'Failed'].map((item) => (
+            <div className="rounded-[7px] bg-white/10 p-3 text-sm font-black" key={item}>{item}: {invoices.filter((invoice) => invoice.status === item).length}</div>
           ))}
         </div>
       </div>
@@ -441,7 +421,7 @@ function PaymentsPanel({ invoices = [] }) {
   )
 }
 
-function CompanyProfile({ totalJobs, user }) {
+function CompanyProfile({ company, totalJobs, user }) {
   return (
     <div className="grid gap-4 lg:grid-cols-[170px_1fr]">
       <div className="grid min-h-40 place-items-center rounded-[7px] border border-[#0057B8]/15 bg-[#0057B8]/5">
@@ -449,19 +429,19 @@ function CompanyProfile({ totalJobs, user }) {
       </div>
       <div className="grid gap-3 sm:grid-cols-2">
         {[
-          ['Company name', user?.name || 'INSEET Hiring Partner'],
-          ['Website', 'https://company.example'],
-          ['Location', 'India'],
-          ['Team size', '51-200'],
+          ['Company name', company.companyName || user?.name || 'Not added'],
+          ['Website', company.website || 'Not added'],
+          ['Location', company.location || 'Not added'],
+          ['Team size', company.companySize || 'Not added'],
           ['Posted jobs', totalJobs],
-          ['Verification', 'Verified recruiter'],
+          ['Verification', user?.recruiterVerificationStatus || 'Pending'],
         ].map(([label, value]) => (
           <div className="rounded-[7px] border border-slate-200 bg-slate-50 p-3" key={label}>
             <p className="text-xs font-black uppercase tracking-wide text-slate-400">{label}</p>
             <p className="mt-1 font-bold text-slate-800">{value}</p>
           </div>
         ))}
-        <Button className="sm:col-span-2">Edit Company Profile</Button>
+        <Button className="sm:col-span-2" to="/recruiter-profile">Edit Company Profile</Button>
       </div>
     </div>
   )
@@ -469,22 +449,10 @@ function CompanyProfile({ totalJobs, user }) {
 
 function SettingsPanel() {
   return (
-    <div className="grid gap-3 md:grid-cols-2">
-      {[
-        ['Profile settings', 'Name, email, phone, and recruiter identity.'],
-        ['Password change', 'Security password and access control.'],
-        ['Notifications', 'Email, chat, shortlist, and payment alerts.'],
-        ['Account settings', 'Billing and workspace preferences.'],
-      ].map(([title, text]) => (
-        <label className="flex items-center justify-between gap-4 rounded-[7px] border border-slate-200 bg-slate-50 p-4" key={title}>
-          <span>
-            <span className="block font-black text-slate-950">{title}</span>
-            <span className="mt-1 block text-sm font-semibold text-slate-500">{text}</span>
-          </span>
-          <input className="h-5 w-5 accent-[#0057B8]" defaultChecked type="checkbox" />
-        </label>
-      ))}
-      <Button className="md:col-span-2"><Settings size={18} /> Save Settings</Button>
+    <div className="grid gap-3 sm:grid-cols-2">
+      <Button to="/recruiter-profile" variant="secondary">Edit recruiter profile</Button>
+      <Button to="/recruiter-pricing" variant="secondary">Manage hiring plan</Button>
+      <SupportChatButton>Account and notification support</SupportChatButton>
     </div>
   )
 }

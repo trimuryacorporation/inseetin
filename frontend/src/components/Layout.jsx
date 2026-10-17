@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
-import { ArrowRight, Bell, BriefcaseBusiness, Building2, CalendarDays, ChevronRight, ClipboardList, CreditCard, Download, Lock, LogOut, Mail, MapPin, Menu, MessageCircle, Phone, Search, Send, Share2, ShieldCheck, Sparkles, Star, UserRound, Users, Wallet, X } from 'lucide-react'
+import { ArrowRight, Bell, BriefcaseBusiness, Building2, CalendarDays, ChevronDown, ChevronRight, ClipboardList, CreditCard, Download, Lock, LogOut, Mail, MapPin, Menu, MessageCircle, Phone, Search, Send, Share2, ShieldCheck, Sparkles, Star, UserRound, Users, Wallet, X } from 'lucide-react'
 import { AuthModal } from './AuthModal'
 import { Button } from './Button'
 import { getStoredUser } from '../routes/authRouting'
 import { EmployerFooter } from '../employer/components/EmployerFooter'
 import { api } from '../services/api'
+import { useApiResource } from '../hooks/useApiResource'
 import { getCandidateProfileCompletion, getJobAlerts } from '../utils/candidateActivity'
 import { getSavedJobs } from '../utils/savedJobs'
 import { useSiteBranding } from '../utils/siteBranding'
@@ -42,6 +43,14 @@ export function Layout() {
   const [newsletterStatus, setNewsletterStatus] = useState({ type: '', message: '' })
   const [newsletterLoading, setNewsletterLoading] = useState(false)
   const [appBannerOpen, setAppBannerOpen] = useState(true)
+
+  useEffect(() => {
+    if (!appBannerOpen) return
+
+    const timeoutId = window.setTimeout(() => setAppBannerOpen(false), 3000)
+    return () => window.clearTimeout(timeoutId)
+  }, [appBannerOpen])
+
   const [authModalMode, setAuthModalMode] = useState('')
   const [showCompaniesNav, setShowCompaniesNav] = useState(false)
   const [headerSearch, setHeaderSearch] = useState('')
@@ -61,14 +70,14 @@ export function Layout() {
       if (isRecruiterAccount && item.label === 'Recruiter') return { ...item, to: recruiterDashboardPath }
       return item
     })
-  const mobileNavItems = visibleNavItems.filter((item) => !['Freelancer', 'Recruiter'].includes(item.label))
+  const mobileNavItems = [...visibleNavItems, { label: 'Freelance Projects', to: '/freelancer/projects' }]
   const publicHeaderLinks = [
     { label: 'Home', to: '/' },
     { label: 'Find Jobs', to: '/jobs' },
     { label: 'Internship Course', to: '/internship-course', badge: 'Video' },
     ...(showCompaniesNav ? [{ label: 'Companies', to: '/companies' }] : []),
     { label: 'Freelance Projects', to: '/freelancer/projects', badge: 'New' },
-    { label: 'Candidates', to: isUserAccount ? '/candidate-dashboard' : '/auth', caption: 'Candidates' },
+    { label: 'Candidates', to: isUserAccount ? '/candidate-dashboard' : '/auth', caption: '' },
   ]
 
   useEffect(() => {
@@ -247,11 +256,11 @@ export function Layout() {
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900">
       <header className="sticky top-0 z-50 bg-white/95 px-2 py-2 shadow-sm backdrop-blur sm:px-4">
-        <div className="mx-auto max-w-[1560px] overflow-hidden rounded-[14px] bg-white shadow-xl shadow-slate-200/70">
-          <nav className="flex min-h-[86px] items-center justify-between gap-3 px-3 sm:px-5 lg:gap-5">
-            <Link className="flex min-w-0 shrink-0 items-center font-bold text-[#ff8a00]" onClick={handleHeaderLinkClick} to="/">
+        <div className="mx-auto max-w-[1560px] rounded-[14px] bg-white shadow-xl shadow-slate-200/70">
+          <nav className="flex min-h-[72px] items-center justify-between gap-3 px-3 sm:px-5 lg:gap-5">
+            <Link className="flex w-32 shrink-0 items-center font-bold text-[#ff8a00] sm:w-40" onClick={handleHeaderLinkClick} to="/">
               {branding.logoUrl ? (
-                <img className="h-14 w-auto max-w-[250px] object-contain mix-blend-multiply" src={branding.logoUrl} alt={branding.siteName || 'INSEET'} />
+                <img className="h-10 w-full object-contain object-left sm:h-12" src={branding.logoUrl} alt={branding.siteName || 'INSEET'} />
               ) : (
                 <>
                   <span className="grid h-12 w-12 place-items-center rounded-[7px] bg-[#0057B8] text-white"><BriefcaseBusiness size={22} /></span>
@@ -260,11 +269,11 @@ export function Layout() {
               )}
             </Link>
 
-            <div className="hidden flex-1 items-center justify-center gap-5 xl:flex">
+            <div className="hidden flex-1 items-center justify-center gap-4 xl:flex">
               {publicHeaderLinks.map((item) => (
                 <NavLink
                   className={({ isActive }) =>
-                    `group relative inline-flex min-h-[60px] items-center gap-2 text-sm font-black transition ${
+                    `group relative inline-flex min-h-[50px] items-center gap-1.5 text-[13px] font-bold transition ${
                       isActive ? 'text-[#0057B8]' : 'text-slate-950 hover:text-[#0057B8]'
                     }`
                   }
@@ -287,7 +296,7 @@ export function Layout() {
               ))}
             </div>
 
-            <form className="hidden h-12 w-[280px] shrink-0 items-center gap-2 rounded-full border border-slate-200 bg-white px-4 shadow-sm xl:flex" onSubmit={submitHeaderSearch}>
+            <form className="hidden h-10 w-[250px] shrink-0 items-center gap-2 rounded-full border border-slate-200 bg-white px-4 shadow-sm xl:flex" onSubmit={submitHeaderSearch}>
               <button className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-slate-400 transition hover:bg-slate-50 hover:text-[#0057B8]" type="submit" aria-label="Search jobs">
                 <Search size={19} />
               </button>
@@ -299,7 +308,7 @@ export function Layout() {
               />
             </form>
 
-            <div className="hidden shrink-0 items-center gap-3 lg:flex">
+            <div className="hidden shrink-0 items-center gap-2 xl:flex">
             {isUserAccount ? (
               <>
                 <RoleNotificationBell loading={notificationsLoading} notifications={notifications} onClear={clearNotifications} open={notificationsOpen} setOpen={setNotificationsOpen} setProfileOpen={setProfileOpen} user={user} />
@@ -312,13 +321,13 @@ export function Layout() {
               </>
             ) : (
               <>
-                <button className="inline-flex min-h-12 items-center justify-center rounded-[7px] border border-[#0057B8] bg-[white] px-6 text-base font-black text-[#0057B8] transition hover:bg-blue-50" onClick={() => openAuthModal('login')} type="button">
+                <button className="inline-flex min-h-10 items-center justify-center rounded-[7px] border border-[#0057B8] bg-[white] px-4 text-sm font-bold text-[#0057B8] transition hover:bg-blue-50" onClick={() => openAuthModal('login')} type="button">
                   Login
                 </button>
-                <button className="inline-flex min-h-12 items-center justify-center rounded-[7px] bg-[#ff8a00] px-6 text-base font-black text-white shadow-lg shadow-orange-100 transition hover:bg-[#e87500]" onClick={() => openAuthModal('register')} type="button">
+                <button className="inline-flex min-h-10 items-center justify-center rounded-[7px] bg-[#ff8a00] px-4 text-sm font-bold text-white shadow-lg shadow-orange-100 transition hover:bg-[#e87500]" onClick={() => openAuthModal('register')} type="button">
                   Register
                 </button>
-                <Link className="inline-flex min-h-12 items-center gap-3 whitespace-nowrap rounded-[7px] bg-[#0057B8] px-5 text-sm font-black text-white shadow-lg shadow-blue-100" onClick={handleHeaderLinkClick} to="/recruiter">
+                <Link className="inline-flex min-h-10 items-center gap-2 whitespace-nowrap rounded-[7px] bg-[#0057B8] px-4 text-[13px] font-bold text-white shadow-lg shadow-blue-100" onClick={handleHeaderLinkClick} to="/recruiter">
                   <BriefcaseBusiness size={19} />
                   <span>
                     For Employers
@@ -331,8 +340,9 @@ export function Layout() {
             </div>
 
             <button
-              aria-label="Open menu"
-              className="grid h-10 w-10 shrink-0 place-items-center rounded-[7px] bg-[#0057B8] text-white shadow-lg shadow-blue-100 lg:hidden"
+              aria-label={open ? 'Close menu' : 'Open menu'}
+              aria-expanded={open}
+              className="grid h-10 w-10 shrink-0 place-items-center rounded-[7px] bg-[#0057B8] text-white shadow-lg shadow-blue-100 xl:hidden"
               onClick={() => setOpen((value) => !value)}
               type="button"
             >
@@ -341,9 +351,9 @@ export function Layout() {
           </nav>
         </div>
 
-        <div className={`lg:hidden ${open ? 'pointer-events-auto' : 'pointer-events-none'}`}>
+        <div className={`xl:hidden ${open ? 'pointer-events-auto' : 'pointer-events-none'}`}>
           <button aria-label="Close menu overlay" className={`fixed inset-0 z-[80] bg-slate-950/35 transition-opacity duration-300 ${open ? 'opacity-100' : 'opacity-0'}`} onClick={() => setOpen(false)} type="button" />
-          <aside className={`fixed inset-y-0 right-0 z-[90] h-dvh w-80 max-w-[86vw] overflow-y-auto border-l border-[#0057B8]/10 bg-white px-4 py-4 shadow-2xl shadow-[#0057B8]/20 transition-transform duration-300 ease-out ${open ? 'translate-x-0' : 'translate-x-full'}`}>
+          <aside inert={!open} className={`fixed inset-y-0 right-0 z-[90] h-dvh w-80 max-w-[86vw] overflow-y-auto border-l border-[#0057B8]/10 bg-white px-4 py-4 shadow-2xl shadow-[#0057B8]/20 transition-transform duration-300 ease-out ${open ? 'translate-x-0' : 'translate-x-full'}`}>
               <div className="mb-4 flex items-center justify-between gap-3 rounded-[7px] bg-[linear-gradient(135deg,#eef7ff,#fff4e6)] p-3">
                 <span className="text-sm font-black text-slate-950">Menu</span>
                 <button aria-label="Close menu" className="grid h-9 w-9 place-items-center rounded-[7px] bg-[white] text-slate-700 shadow-sm ring-1 ring-slate-200 transition hover:text-[#ff8a00]" onClick={() => setOpen(false)} type="button">
@@ -795,11 +805,14 @@ function MainFooter({ branding, newsletterEmail, newsletterLoading, newsletterSt
     ['Profile Settings', '/candidate-profile'],
     ['Resume Builder', '/candidate-profile'],
   ]
+  const { data: summary, loading: summaryLoading, error: summaryError } = useApiResource(() => api.portalSummary(), { counts: {} }, [])
+  const counts = summary.counts || {}
+  const count = (key) => summaryLoading || summaryError ? '?' : Number(counts[key] || 0).toLocaleString()
   const stats = [
-    [BriefcaseBusiness, '10,000+', 'Jobs Available', 'blue'],
-    [Users, '5,000+', 'Active Candidates', 'green'],
-    [Building2, '1,000+', 'Companies', 'orange'],
-    [ShieldCheck, '500+', 'Cities Covered', 'purple'],
+    [BriefcaseBusiness, count('jobs'), 'Jobs Available', 'blue'],
+    [Users, count('candidates'), 'Candidates', 'green'],
+    [Building2, count('companies'), 'Companies', 'orange'],
+    [ShieldCheck, count('recruiters'), 'Recruiters', 'purple'],
   ]
   const handleFooterLinkClick = () => {
     window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }))

@@ -1,68 +1,101 @@
-import { useState } from 'react'
+import { lazy, Suspense, useState } from 'react'
 import { Navigate, createBrowserRouter, RouterProvider, useNavigate } from 'react-router-dom'
 import { CookieConsent } from './components/CookieConsent'
 import { AuthModal } from './components/AuthModal'
-import { FAQPage } from './components/FAQSection'
 import { ApplyModal, Toast } from './components/PortalUI'
-import { AdminLayout } from './admin/components/AdminLayout'
-import { AdminBulkHiringPage, AdminHiringPage, AdminSingleHiringPage } from './admin/pages/AdminHiringPages'
-import { AdminHiringTeamPage } from './admin/pages/AdminHiringTeamPage'
-import { AdminProfilePage } from './admin/pages/AdminProfilePage'
-import { AdminDiscountCouponPage, AdminGoogleAuthPage, AdminManagementPage, AdminNewsletterSendPage, AdminPaymentDetailPage, AdminPricingPage, AdminSEOBrandingPage, AdminSettingsPage, AdminSupaCloudPage, RecruiterDetailPage, RecruiterDocumentDetailPage, SupportMessageDetailPage } from './admin/pages/AdminManagementPage'
-import { AdminWhatsAppApiPage } from './admin/pages/AdminWhatsAppApiPage'
-import { AdminEmailApiPage } from './admin/pages/AdminEmailApiPage'
-import { AdminAddPluginsPage, AdminInstalledPluginsPage } from './admin/pages/AdminPluginsPage'
-import { AdminRazorpayPage } from './admin/pages/AdminRazorpayPage'
-import { AdminSocialMediaPage } from './admin/pages/AdminSocialMediaPage'
-import { AdminRoleDashboard } from './admin/pages/AdminRoleDashboard'
-import { AdminRolePermissionPage } from './admin/pages/AdminRolePermissionPage'
-import { AdminCampaignsPage } from './admin/pages/AdminCampaignsPage'
-import { FreelancerLayout } from './components/FreelancerLayout'
 import { Layout } from './components/Layout'
-import { EmployerLayout } from './employer/components/EmployerLayout'
-import { EmployerLoginPage, EmployerRegisterPage } from './employer/pages/EmployerAuthPages'
-import { EmployerLandingPage } from './employer/pages/EmployerLandingPage'
-import { RecruiterTestimonialsPage } from './employer/pages/RecruiterTestimonialsPage'
-import { RecruiterDocumentReviewPage, RecruiterDocumentsPage, RecruiterVerificationPage } from './employer/pages/RecruiterVerificationPages'
-import { AuthPage } from './pages/AuthPage'
-import { AuthModalPage } from './pages/AuthModalPage'
-import { AboutPage } from './pages/AboutPage'
-import { CandidateAppliedJobsPage, CandidateDashboard, CandidateInterviewInvitesPage, CandidateJobAlertsPage, CandidateSavedJobsPage } from './pages/CandidateDashboard'
-import { CandidateProfilePage } from './pages/CandidateProfilePage'
-import { CandidateReviewsPage } from './pages/CandidateReviewsPage'
-import { CareerResourcesPage } from './pages/CareerResourcesPage'
-import { CategoryJobsPage } from './pages/CategoryJobsPage'
-import { CompaniesPage, CompanyDetailsPage } from './pages/CompaniesPage'
-import { ContactPage } from './pages/ContactPage'
-import { ContentPage } from './pages/ContentPage'
-import { EmployerDashboard } from './pages/EmployerDashboard'
-import { FreelancerPage, FreelancerRegisterPage } from './pages/FreelancerPage'
-import { FreelancerProjectDetailsPage, FreelancerProjectsPage } from './pages/FreelancerProjectsPage'
 import { HomePage } from './pages/HomePage'
-import { IndustriesPage } from './pages/IndustriesPage'
-import { JobDetailsPage } from './pages/JobDetailsPage'
-import { JobsPage } from './pages/JobsPage'
-import { PostJobPage } from './pages/PostJobPage'
-import { PressNewsPage } from './pages/PressNewsPage'
-import { RecruiterProfilePage } from './pages/RecruiterProfilePage'
-import { RecruiterFindResumePage } from './pages/RecruiterFindResumePage'
-import { RecruiterJobsPage } from './pages/RecruiterJobsPage'
-import { RecruiterPricingPage } from './pages/RecruiterPricingPage'
-import { RecruiterResourcesPage } from './pages/RecruiterResourcesPage'
-import { RecruiterTalentPoolPage } from './pages/RecruiterTalentPoolPage'
-import { RecruiterAnalyticsPage, RecruiterApplicationsPage, RecruiterCandidateApplicationsPage, RecruiterInterviewsPage, RecruiterTeamPage } from './pages/RecruiterWorkspacePages'
 import { ProtectedRoute, RoleRedirect } from './routes/ProtectedRoute'
+
+const FAQPage = lazy(() => import('./components/FAQSection').then((module) => ({ default: module.FAQPage })))
+const AdminLayout = lazy(() => import('./admin/components/AdminLayout').then((module) => ({ default: module.AdminLayout })))
+const AdminBulkHiringPage = lazy(() => import('./admin/pages/AdminHiringPages').then((module) => ({ default: module.AdminBulkHiringPage })))
+const AdminHiringPage = lazy(() => import('./admin/pages/AdminHiringPages').then((module) => ({ default: module.AdminHiringPage })))
+const AdminSingleHiringPage = lazy(() => import('./admin/pages/AdminHiringPages').then((module) => ({ default: module.AdminSingleHiringPage })))
+const AdminHiringTeamPage = lazy(() => import('./admin/pages/AdminHiringTeamPage').then((module) => ({ default: module.AdminHiringTeamPage })))
+const AdminProfilePage = lazy(() => import('./admin/pages/AdminProfilePage').then((module) => ({ default: module.AdminProfilePage })))
+const AdminDiscountCouponPage = lazy(() => import('./admin/pages/AdminManagementPage').then((module) => ({ default: module.AdminDiscountCouponPage })))
+const AdminGoogleAuthPage = lazy(() => import('./admin/pages/AdminManagementPage').then((module) => ({ default: module.AdminGoogleAuthPage })))
+const AdminManagementPage = lazy(() => import('./admin/pages/AdminManagementPage').then((module) => ({ default: module.AdminManagementPage })))
+const AdminNewsletterSendPage = lazy(() => import('./admin/pages/AdminManagementPage').then((module) => ({ default: module.AdminNewsletterSendPage })))
+const AdminPaymentDetailPage = lazy(() => import('./admin/pages/AdminManagementPage').then((module) => ({ default: module.AdminPaymentDetailPage })))
+const AdminPricingPage = lazy(() => import('./admin/pages/AdminManagementPage').then((module) => ({ default: module.AdminPricingPage })))
+const AdminSEOBrandingPage = lazy(() => import('./admin/pages/AdminManagementPage').then((module) => ({ default: module.AdminSEOBrandingPage })))
+const AdminSettingsPage = lazy(() => import('./admin/pages/AdminManagementPage').then((module) => ({ default: module.AdminSettingsPage })))
+const AdminSupaCloudPage = lazy(() => import('./admin/pages/AdminManagementPage').then((module) => ({ default: module.AdminSupaCloudPage })))
+const RecruiterDetailPage = lazy(() => import('./admin/pages/AdminManagementPage').then((module) => ({ default: module.RecruiterDetailPage })))
+const RecruiterDocumentDetailPage = lazy(() => import('./admin/pages/AdminManagementPage').then((module) => ({ default: module.RecruiterDocumentDetailPage })))
+const SupportMessageDetailPage = lazy(() => import('./admin/pages/AdminManagementPage').then((module) => ({ default: module.SupportMessageDetailPage })))
+const AdminWhatsAppApiPage = lazy(() => import('./admin/pages/AdminWhatsAppApiPage').then((module) => ({ default: module.AdminWhatsAppApiPage })))
+const AdminEmailApiPage = lazy(() => import('./admin/pages/AdminEmailApiPage').then((module) => ({ default: module.AdminEmailApiPage })))
+const AdminAddPluginsPage = lazy(() => import('./admin/pages/AdminPluginsPage').then((module) => ({ default: module.AdminAddPluginsPage })))
+const AdminInstalledPluginsPage = lazy(() => import('./admin/pages/AdminPluginsPage').then((module) => ({ default: module.AdminInstalledPluginsPage })))
+const AdminRazorpayPage = lazy(() => import('./admin/pages/AdminRazorpayPage').then((module) => ({ default: module.AdminRazorpayPage })))
+const AdminSocialMediaPage = lazy(() => import('./admin/pages/AdminSocialMediaPage').then((module) => ({ default: module.AdminSocialMediaPage })))
+const AdminRoleDashboard = lazy(() => import('./admin/pages/AdminRoleDashboard').then((module) => ({ default: module.AdminRoleDashboard })))
+const AdminRolePermissionPage = lazy(() => import('./admin/pages/AdminRolePermissionPage').then((module) => ({ default: module.AdminRolePermissionPage })))
+const AdminCampaignsPage = lazy(() => import('./admin/pages/AdminCampaignsPage').then((module) => ({ default: module.AdminCampaignsPage })))
+const FreelancerLayout = lazy(() => import('./components/FreelancerLayout').then((module) => ({ default: module.FreelancerLayout })))
+const EmployerLayout = lazy(() => import('./employer/components/EmployerLayout').then((module) => ({ default: module.EmployerLayout })))
+const EmployerLoginPage = lazy(() => import('./employer/pages/EmployerAuthPages').then((module) => ({ default: module.EmployerLoginPage })))
+const EmployerRegisterPage = lazy(() => import('./employer/pages/EmployerAuthPages').then((module) => ({ default: module.EmployerRegisterPage })))
+const EmployerLandingPage = lazy(() => import('./employer/pages/EmployerLandingPage').then((module) => ({ default: module.EmployerLandingPage })))
+const RecruiterTestimonialsPage = lazy(() => import('./employer/pages/RecruiterTestimonialsPage').then((module) => ({ default: module.RecruiterTestimonialsPage })))
+const RecruiterDocumentReviewPage = lazy(() => import('./employer/pages/RecruiterVerificationPages').then((module) => ({ default: module.RecruiterDocumentReviewPage })))
+const RecruiterDocumentsPage = lazy(() => import('./employer/pages/RecruiterVerificationPages').then((module) => ({ default: module.RecruiterDocumentsPage })))
+const RecruiterVerificationPage = lazy(() => import('./employer/pages/RecruiterVerificationPages').then((module) => ({ default: module.RecruiterVerificationPage })))
+const AuthPage = lazy(() => import('./pages/AuthPage').then((module) => ({ default: module.AuthPage })))
+const AuthModalPage = lazy(() => import('./pages/AuthModalPage').then((module) => ({ default: module.AuthModalPage })))
+const AboutPage = lazy(() => import('./pages/AboutPage').then((module) => ({ default: module.AboutPage })))
+const CandidateAppliedJobsPage = lazy(() => import('./pages/CandidateDashboard').then((module) => ({ default: module.CandidateAppliedJobsPage })))
+const CandidateDashboard = lazy(() => import('./pages/CandidateDashboard').then((module) => ({ default: module.CandidateDashboard })))
+const CandidateInterviewInvitesPage = lazy(() => import('./pages/CandidateDashboard').then((module) => ({ default: module.CandidateInterviewInvitesPage })))
+const CandidateJobAlertsPage = lazy(() => import('./pages/CandidateDashboard').then((module) => ({ default: module.CandidateJobAlertsPage })))
+const CandidateSavedJobsPage = lazy(() => import('./pages/CandidateDashboard').then((module) => ({ default: module.CandidateSavedJobsPage })))
+const CandidateProfilePage = lazy(() => import('./pages/CandidateProfilePage').then((module) => ({ default: module.CandidateProfilePage })))
+const CandidateReviewsPage = lazy(() => import('./pages/CandidateReviewsPage').then((module) => ({ default: module.CandidateReviewsPage })))
+const CareerResourcesPage = lazy(() => import('./pages/CareerResourcesPage').then((module) => ({ default: module.CareerResourcesPage })))
+const CategoryJobsPage = lazy(() => import('./pages/CategoryJobsPage').then((module) => ({ default: module.CategoryJobsPage })))
+const CompaniesPage = lazy(() => import('./pages/CompaniesPage').then((module) => ({ default: module.CompaniesPage })))
+const CompanyDetailsPage = lazy(() => import('./pages/CompaniesPage').then((module) => ({ default: module.CompanyDetailsPage })))
+const ContactPage = lazy(() => import('./pages/ContactPage').then((module) => ({ default: module.ContactPage })))
+const ContentPage = lazy(() => import('./pages/ContentPage').then((module) => ({ default: module.ContentPage })))
+const EmployerDashboard = lazy(() => import('./pages/EmployerDashboard').then((module) => ({ default: module.EmployerDashboard })))
+const FreelancerPage = lazy(() => import('./pages/FreelancerPage').then((module) => ({ default: module.FreelancerPage })))
+const FreelancerRegisterPage = lazy(() => import('./pages/FreelancerPage').then((module) => ({ default: module.FreelancerRegisterPage })))
+const FreelancerProjectDetailsPage = lazy(() => import('./pages/FreelancerProjectsPage').then((module) => ({ default: module.FreelancerProjectDetailsPage })))
+const FreelancerProjectsPage = lazy(() => import('./pages/FreelancerProjectsPage').then((module) => ({ default: module.FreelancerProjectsPage })))
+const IndustriesPage = lazy(() => import('./pages/IndustriesPage').then((module) => ({ default: module.IndustriesPage })))
+const JobDetailsPage = lazy(() => import('./pages/JobDetailsPage').then((module) => ({ default: module.JobDetailsPage })))
+const JobsPage = lazy(() => import('./pages/JobsPage').then((module) => ({ default: module.JobsPage })))
+const PostJobPage = lazy(() => import('./pages/PostJobPage').then((module) => ({ default: module.PostJobPage })))
+const PressNewsPage = lazy(() => import('./pages/PressNewsPage').then((module) => ({ default: module.PressNewsPage })))
+const RecruiterProfilePage = lazy(() => import('./pages/RecruiterProfilePage').then((module) => ({ default: module.RecruiterProfilePage })))
+const RecruiterFindResumePage = lazy(() => import('./pages/RecruiterFindResumePage').then((module) => ({ default: module.RecruiterFindResumePage })))
+const RecruiterJobsPage = lazy(() => import('./pages/RecruiterJobsPage').then((module) => ({ default: module.RecruiterJobsPage })))
+const RecruiterPricingPage = lazy(() => import('./pages/RecruiterPricingPage').then((module) => ({ default: module.RecruiterPricingPage })))
+const RecruiterResourcesPage = lazy(() => import('./pages/RecruiterResourcesPage').then((module) => ({ default: module.RecruiterResourcesPage })))
+const RecruiterTalentPoolPage = lazy(() => import('./pages/RecruiterTalentPoolPage').then((module) => ({ default: module.RecruiterTalentPoolPage })))
+const RecruiterAnalyticsPage = lazy(() => import('./pages/RecruiterWorkspacePages').then((module) => ({ default: module.RecruiterAnalyticsPage })))
+const RecruiterApplicationsPage = lazy(() => import('./pages/RecruiterWorkspacePages').then((module) => ({ default: module.RecruiterApplicationsPage })))
+const RecruiterCandidateApplicationsPage = lazy(() => import('./pages/RecruiterWorkspacePages').then((module) => ({ default: module.RecruiterCandidateApplicationsPage })))
+const RecruiterInterviewsPage = lazy(() => import('./pages/RecruiterWorkspacePages').then((module) => ({ default: module.RecruiterInterviewsPage })))
+const RecruiterTeamPage = lazy(() => import('./pages/RecruiterWorkspacePages').then((module) => ({ default: module.RecruiterTeamPage })))
+const InternshipCoursePage = lazy(() => import('./pages/InternshipCoursePage').then((module) => ({ default: module.InternshipCoursePage })))
+
+const AdminApiDeveloperPage = lazy(() => import('./admin/pages/AdminApiDeveloperPage').then(module => ({ default: module.AdminApiDeveloperPage })))
 
 function App() {
   const [selectedJob, setSelectedJob] = useState(null)
 
-  const router = createBrowserRouter([
+  const [router] = useState(() => createBrowserRouter([
     {
       element: <Layout />,
       children: [
         { path: '/', element: <HomePage onApply={setSelectedJob} /> },
         { path: '/jobs', element: <JobsPage onApply={setSelectedJob} /> },
         { path: '/industries', element: <IndustriesPage /> },
+        { path: '/internship-course', element: <InternshipCoursePage /> },
         { path: '/jobs-in-:categorySlug', element: <CategoryJobsPage onApply={setSelectedJob} /> },
         { path: '/categories/:categorySlug', element: <CategoryJobsPage onApply={setSelectedJob} /> },
         { path: '/companies', element: <CompaniesPage /> },
@@ -187,6 +220,7 @@ function App() {
         { path: 'package/discount-coupons', element: <AdminDiscountCouponPage /> },
         { path: 'package/google-auth', element: <Navigate replace to="/admin/settings/google-auth" /> },
         { path: 'reports', element: <AdminManagementPage type="reports" /> },
+        { path: 'api-developer', element: <AdminApiDeveloperPage /> },
         { path: 'settings', element: <AdminSettingsPage /> },
         { path: 'settings/google-auth', element: <AdminGoogleAuthPage /> },
         { path: 'settings/whatsapp-api', element: <AdminWhatsAppApiPage /> },
@@ -413,11 +447,13 @@ function App() {
         { path: '/recruiter-document-review', element: <RecruiterDocumentReviewPage /> },
       ],
     },
-  ])
+  ]))
 
   return (
     <>
-      <RouterProvider router={router} />
+      <Suspense fallback={<div role="status" className="grid min-h-[50dvh] place-items-center px-4 text-sm font-semibold text-slate-500">Loading page...</div>}>
+        <RouterProvider router={router} />
+      </Suspense>
       <ApplyModal job={selectedJob} onClose={() => setSelectedJob(null)} />
       <Toast />
       <CookieConsent />

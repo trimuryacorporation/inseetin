@@ -350,7 +350,7 @@ export function AdminHiringTeamPage() {
     setActionMessage('')
 
     if (row.resumeId) {
-      api.openResume(row.resumeId).catch((error) => setMessage(error.message || 'Resume could not be opened.'))
+      api.openResume(row.resumeId).catch((error) => setActionMessage(error.message || 'Resume could not be opened.'))
       return
     }
 
@@ -364,7 +364,7 @@ export function AdminHiringTeamPage() {
       const payload = await api.list('resumes', `?search=${encodeURIComponent(resumeUrl)}&limit=5`)
       const match = (payload.data || []).find((resume) => resume.resumeUrl === resumeUrl)
       if (match?._id) {
-        api.openResume(match._id).catch((error) => setMessage(error.message || 'Resume could not be opened.'))
+        api.openResume(match._id).catch((error) => setActionMessage(error.message || 'Resume could not be opened.'))
         return
       }
     } catch {

@@ -110,7 +110,7 @@ const getUser = asyncHandler(async (req, res) => {
 
 const createUser = asyncHandler(async (req, res) => {
   ensureAdmin(req, res)
-  const { name, email, password, role, status } = req.body
+  const { name, email, phone, avatar, password, role, status } = req.body
   const exists = await User.findOne({ email })
 
   if (exists) {
@@ -129,6 +129,8 @@ const createUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
+    phone,
+    avatar,
     role: normalizedRole,
     status: normalizeRecruiterAccessStatus(normalizedRole, status, recruiterVerificationStatus),
     recruiterVerificationStatus,
@@ -151,6 +153,8 @@ const updateUser = asyncHandler(async (req, res) => {
     user.recruiterVerificationRemark = req.body.recruiterVerificationRemark ?? user.recruiterVerificationRemark
     user.status = normalizeRecruiterAccessStatus(user.role, user.status, user.recruiterVerificationStatus)
   } else {
+    user.phone = req.body.phone ?? user.phone
+    user.avatar = req.body.avatar ?? user.avatar
     user.name = req.body.name ?? user.name
     user.email = req.body.email ?? user.email
     user.role = normalizeRole(req.body.role ?? user.role)

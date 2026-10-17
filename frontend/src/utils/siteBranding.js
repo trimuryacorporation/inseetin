@@ -26,6 +26,11 @@ export const defaultSiteBranding = {
   appRating: '4.4',
   appReviews: '42K Reviews',
   appDownloads: '50L+',
+  courseTitle: 'Internship Video Course',
+  coursePrice: '999',
+  courseHours: '12+',
+  courseAccess: 'Lifetime',
+  coursePreviewUrl: '',
 }
 
 export function applySiteBrandingMeta(branding = {}) {
@@ -156,6 +161,8 @@ function migrateLegacyBranding(branding = {}) {
     const migratedValue = nextValue
       .replace(/cromgen-rozgar-logo\.png/gi, 'inseet-logo.png')
       .replace(/cromgen-rozgar-favicon\.png/gi, 'inseet-favicon.png')
+    // Use the cleaned local asset for the previously uploaded INSEET logo too.
+    if (/1784127350711-logo\.png(?:[?#].*)?$/i.test(migratedValue)) return logoAsset
     if (/\/?inseet-logo\.png$/i.test(migratedValue)) return logoAsset
     return migratedValue
   }

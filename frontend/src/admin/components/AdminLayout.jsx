@@ -83,6 +83,7 @@ const sidebarItems = [
       { label: 'Recruiter Documents', to: '/admin/recruiter-documents', icon: FileCheck2 },
     ],
   },
+  { label: 'API Developer', to: '/admin/api-developer', icon: KeyRound, roles: ['Admin'] },
   { label: 'Candidates', to: '/admin/candidates', icon: UsersRound, roles: ['Admin'] },
   { label: 'Hiring Team', to: '/admin/hiring-team', icon: UserPlus, roles: ['Admin'] },
   { label: 'Applications', to: '/admin/applications', icon: FileCheck2, roles: ['Admin'] },

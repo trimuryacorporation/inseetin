@@ -5,6 +5,7 @@ import { Button } from '../components/Button'
 import { Section } from '../components/Section'
 import { getDashboardPath, storeAuthSession } from '../routes/authRouting'
 import { api } from '../services/api'
+import { useApiResource } from '../hooks/useApiResource'
 import freelancerHomeHeroImage from '../assets/freelancer-home-hero.png'
 import freelancerProjectsHeroImage from '../assets/freelancer-projects-photo.png'
 
@@ -99,6 +100,9 @@ const freelancerBenefits = [
 ]
 
 export function FreelancerPage() {
+  const { data: freelancers, loading } = useApiResource(() => api.freelancerProfiles(), [], [])
+  const { data: jobs } = useApiResource(() => api.jobListings(), [], [])
+  const projects = jobs.filter((job) => ['Freelance', 'Contract'].includes(job.type))
   return (
     <>
       <FreelancerHeroSlider />
@@ -178,17 +182,17 @@ export function FreelancerPage() {
 
         <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
           {[
-            [UsersRound, '10,000+', 'Active Freelancers', 'bg-blue-50 text-[#0057B8]'],
-            [BriefcaseBusiness, '2,500+', 'Live Projects', 'bg-green-50 text-[#21a943]'],
-            [Building2, '500+', 'Hiring Companies', 'bg-orange-50 text-[#ff8a00]'],
-            [ShieldCheck, '95%', 'Success Rate', 'bg-violet-50 text-[#6d37dc]'],
+            [UsersRound, loading ? '?' : freelancers.length, 'Active Freelancers', 'bg-blue-50 text-[#0057B8]'],
+            [BriefcaseBusiness, projects.length, 'Live Contract Jobs', 'bg-green-50 text-[#21a943]'],
+            [Building2, new Set(projects.map((job) => job.company)).size, 'Hiring Companies', 'bg-orange-50 text-[#ff8a00]'],
+            [ShieldCheck, projects.filter((job) => job.workMode === 'Remote').length, 'Remote Contract Jobs', 'bg-violet-50 text-[#6d37dc]'],
           ].map(([Icon, value, label, tone]) => (
-            <div className="flex items-center gap-5 rounded-[7px] border border-slate-200 bg-white p-5 shadow-xl shadow-blue-100/50" key={label}>
-              <span className={`grid h-20 w-20 shrink-0 place-items-center rounded-full ${tone}`}>
+            <div className="flex items-center gap-3 rounded-[7px] border border-slate-200 bg-white p-4 shadow-xl shadow-blue-100/50" key={label}>
+              <span className={`grid h-12 w-12 shrink-0 sm:h-16 sm:w-16 place-items-center rounded-full ${tone}`}>
                 <Icon size={34} />
               </span>
               <div>
-                <p className={`text-4xl font-black ${String(tone).split(' ').at(-1)}`}>{value}</p>
+                <p className={`text-2xl font-black sm:text-3xl ${String(tone).split(' ').at(-1)}`}>{value}</p>
                 <p className="mt-1 text-sm font-black text-slate-950">{label}</p>
               </div>
             </div>
