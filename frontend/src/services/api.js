@@ -1,4 +1,5 @@
 import { resolveApiBaseUrl } from '../utils/apiBaseUrl'
+import { requestJson } from '../utils/apiTransport'
 
 const API_BASE_URL = resolveApiBaseUrl({
   hostname: typeof window !== 'undefined' ? window.location.hostname : '',
@@ -27,39 +28,18 @@ export async function apiRequest(path, options = {}) {
     ...(fetchOptions.headers || {}),
   }
 
-  const response = await fetch(apiUrl(path), {
-    cache: 'no-store',
-    ...fetchOptions,
-    headers,
-  })
-
-  const payload = await response.json().catch(() => ({}))
-
-  if (response.ok && payload?.success === false) {
-    throw new Error(payload.message || 'API request failed')
-  }
-
-  if (!response.ok) {
-    if (response.status === 401) {
-      if (authRequired) {
-        localStorage.removeItem('authToken')
-        localStorage.removeItem('authUser')
-        localStorage.removeItem('authExpiresAt')
-
-        if (typeof window !== 'undefined' && window.location.pathname !== '/auth') {
-          window.location.assign('/auth')
-        }
-
-        throw new Error('Session expired. Please login again.')
-      }
-
-      throw new Error(payload.message || 'Unauthorized request')
+  try {
+    return await requestJson(apiUrl(path), { cache: 'no-store', ...fetchOptions, headers })
+  } catch (error) {
+    if (error.status === 401 && authRequired) {
+      localStorage.removeItem('authToken')
+      localStorage.removeItem('authUser')
+      localStorage.removeItem('authExpiresAt')
+      if (typeof window !== 'undefined' && window.location.pathname !== '/auth') window.location.assign('/auth')
+      throw new Error('Session expired. Please login again.')
     }
-
-    throw new Error(payload.message || 'API request failed')
+    throw error
   }
-
-  return payload
 }
 
 const readAuthResources = new Set([

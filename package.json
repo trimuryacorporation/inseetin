@@ -4,7 +4,9 @@
   "version": "1.0.0",
   "scripts": {
     "build": "npm --prefix frontend ci && npm --prefix frontend run build && node -e \"require('fs').cpSync('frontend/dist','dist',{recursive:true,force:true})\"",
-    "vercel-build": "npm run build"
+    "vercel-build": "npm run build",
+    "test:api": "node scripts/run-api-tests.cjs",
+    "audit:api": "node scripts/audit-api.cjs"
   },
   "dependencies": {
     "aws4": "^1.13.2",

@@ -160,10 +160,18 @@ const register = asyncHandler(async (req, res) => {
   const { name, password, role } = req.body
   const email = normalizeEmail(req.body.email)
   const phone = normalizePhone(req.body.phone)
-  const normalizedRole = normalizeRole(role)
+  const normalizedRole = normalizeRole(role || 'Candidate')
+  if (!['Candidate', 'users', 'recruiter', 'freelancer'].includes(normalizedRole)) {
+    res.status(403)
+    throw new Error('This account role cannot be created through public registration.')
+  }
+  if (typeof name !== 'string' || !name.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    res.status(400)
+    throw new Error('A name and valid email address are required.')
+  }
   const duplicateChecks = [{ email }]
 
-  if (!password || String(password).length < 6) {
+  if (typeof password !== 'string' || password.length < 6) {
     res.status(400)
     throw new Error('Password must be at least 6 characters.')
   }
@@ -202,6 +210,10 @@ const register = asyncHandler(async (req, res) => {
 
 const login = asyncHandler(async (req, res) => {
   const { email, password } = req.body
+  if (typeof email !== 'string' || !email.trim() || typeof password !== 'string' || !password) {
+    res.status(400)
+    throw new Error('Email and password are required.')
+  }
   const user = await User.findOne({ email: normalizeEmail(email) })
 
   if (!user || !(await user.matchPassword(password))) {
@@ -569,6 +581,10 @@ async function sendPasswordResetEmail({ config, provider, resetLink, user }) {
 const googleAuth = asyncHandler(async (req, res) => {
   const { credential, mode = 'login' } = req.body
   const requestedRole = normalizeRole(req.body.role || 'Candidate')
+  if (mode !== 'login' && !['Candidate', 'users', 'recruiter', 'freelancer'].includes(requestedRole)) {
+    res.status(403)
+    throw new Error('This account role cannot be created through public registration.')
+  }
   const googleConfig = await getGoogleAuthConfig()
 
   if (!googleConfig.enabled || !googleConfig.clientId) {

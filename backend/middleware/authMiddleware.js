@@ -60,7 +60,13 @@ const optionalProtect = asyncHandler(async (req, res, next) => {
   }
 
   const token = header.split(' ')[1]
-  const decoded = jwt.verify(token, process.env.JWT_SECRET)
+  let decoded
+  try {
+    decoded = jwt.verify(token, process.env.JWT_SECRET)
+  } catch {
+    res.status(401)
+    throw new Error('Session expired. Please login again.')
+  }
   req.user = await User.findById(decoded.id).select('-password')
 
   if (req.user) {

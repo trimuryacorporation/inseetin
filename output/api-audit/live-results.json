@@ -1,0 +1,1242 @@
+{
+  "checkedAt": "2026-10-17T10:24:24.856Z",
+  "registeredRoutes": 184,
+  "scope": "Unauthenticated, read-only smoke checks. 401 is expected for protected endpoints; no live records or credentials are changed.",
+  "summary": [
+    {
+      "base": "https://www.inseet.in",
+      "total": 45,
+      "passed": 0,
+      "failed": 45
+    },
+    {
+      "base": "https://inseet.in",
+      "total": 45,
+      "passed": 0,
+      "failed": 45
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "total": 45,
+      "passed": 45,
+      "failed": 0
+    }
+  ],
+  "results": [
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/health",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 246,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/auth/google-config",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 230,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/recruiter-page",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 232,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/portal-summary",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 151,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/job-listings",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 159,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/company-profiles",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 207,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/jobs",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 184,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/companies",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 205,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/content-pages",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 172,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/faqs",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 169,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/freelancer-profiles",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 163,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/career-jobs",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 165,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/categories",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 149,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/locations",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 136,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/pricing-packages",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 139,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/video-testimonials",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 137,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/press-news",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 161,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/testimonials",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 163,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/settings/public/site-branding",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 148,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/settings/public/social-links",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 159,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/users",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 156,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/candidates",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 129,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/employers",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 149,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/applications",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 150,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/newsletter-updates",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 133,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/newsletter-subscribers",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 160,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/payments",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 167,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/recruiter-documents",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 124,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/resumes",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 138,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/settings",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 140,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/settings/site-branding",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 142,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/support-messages",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 151,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/dashboard/admin",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 140,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/dashboard/employer",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 142,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/campaigns",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 143,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/campaigns/follow-ups",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 148,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/user-locations/current",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 129,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/user-locations/history",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 156,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/user-locations/active",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 154,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/auth/me",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 139,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/developer/keys",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 135,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/developer/catalog",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 151,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/developer/logs?page=1",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 142,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/developer/openapi.json",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 148,
+      "passed": false
+    },
+    {
+      "base": "https://www.inseet.in",
+      "path": "/api/integrations/v1/jobs",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 149,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/health",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 335,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/recruiter-page",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 390,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/auth/google-config",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 398,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/company-profiles",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 194,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/portal-summary",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 199,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/job-listings",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 218,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/jobs",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 214,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/content-pages",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 185,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/companies",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 213,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/faqs",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 203,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/freelancer-profiles",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 183,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/career-jobs",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 201,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/categories",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 201,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/locations",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 212,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/pricing-packages",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 215,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/press-news",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 207,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/testimonials",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 201,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/video-testimonials",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 206,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/settings/public/site-branding",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 211,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/settings/public/social-links",
+      "expected": 200,
+      "status": 404,
+      "json": false,
+      "durationMs": 202,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/users",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 208,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/employers",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 206,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/candidates",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 213,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/applications",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 196,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/newsletter-subscribers",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 199,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/payments",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 177,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/newsletter-updates",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 233,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/recruiter-documents",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 208,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/resumes",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 215,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/settings",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 243,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/settings/site-branding",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 195,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/support-messages",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 190,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/dashboard/admin",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 205,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/dashboard/employer",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 224,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/campaigns",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 219,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/campaigns/follow-ups",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 209,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/user-locations/current",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 194,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/user-locations/active",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 176,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/user-locations/history",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 279,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/auth/me",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 209,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/developer/keys",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 213,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/developer/catalog",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 184,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/developer/logs?page=1",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 203,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/developer/openapi.json",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 210,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.in",
+      "path": "/api/integrations/v1/jobs",
+      "expected": 401,
+      "status": 404,
+      "json": false,
+      "durationMs": 215,
+      "passed": false
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/health",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 876,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/auth/google-config",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 1073,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/company-profiles",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 533,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/job-listings",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 509,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/portal-summary",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 517,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/jobs",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 556,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/companies",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 512,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/content-pages",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 1277,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/recruiter-page",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 3417,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/freelancer-profiles",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 512,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/career-jobs",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 519,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/faqs",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 1690,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/locations",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 510,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/pricing-packages",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 519,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/categories",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 771,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/press-news",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 518,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/testimonials",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 758,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/settings/public/site-branding",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 513,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/users",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 285,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/video-testimonials",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 1188,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/settings/public/social-links",
+      "expected": 200,
+      "status": 200,
+      "json": true,
+      "durationMs": 507,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/employers",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 285,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/candidates",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 270,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/applications",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 279,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/newsletter-subscribers",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 281,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/newsletter-updates",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 269,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/payments",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 277,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/recruiter-documents",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 283,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/resumes",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 272,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/settings",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 281,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/settings/site-branding",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 282,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/support-messages",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 271,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/dashboard/admin",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 281,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/dashboard/employer",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 280,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/campaigns",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 276,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/campaigns/follow-ups",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 279,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/user-locations/current",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 281,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/user-locations/history",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 275,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/user-locations/active",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 279,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/auth/me",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 287,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/developer/keys",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 270,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/developer/catalog",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 278,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/developer/logs?page=1",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 281,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/developer/openapi.json",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 271,
+      "passed": true
+    },
+    {
+      "base": "https://inseet.onrender.com",
+      "path": "/api/integrations/v1/jobs",
+      "expected": 401,
+      "status": 401,
+      "json": true,
+      "durationMs": 282,
+      "passed": true
+    }
+  ]
+}

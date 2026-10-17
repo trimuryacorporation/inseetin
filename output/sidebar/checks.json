@@ -13,6 +13,14 @@
       "passed": true
     },
     {
+      "name": "Industry and project icons match their destinations",
+      "passed": true
+    },
+    {
+      "name": "Campaigns submenu opens without missing-icon crash",
+      "passed": true
+    },
+    {
       "name": "User filter highlights Staff only",
       "passed": true
     },

@@ -1,0 +1,21 @@
+{
+  "checks": [
+    {
+      "name": "Hosting 404 displays a routing error instead of generic failure",
+      "passed": true
+    },
+    {
+      "name": "Failure leaves the application usable",
+      "passed": true
+    },
+    {
+      "name": "Refresh recovers after the API returns",
+      "passed": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

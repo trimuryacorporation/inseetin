@@ -2,6 +2,22 @@ import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation, useNavigate, useSearchParams } from 'react-router-dom'
 import {
   Bell,
+  Factory,
+  FolderKanban,
+  FolderOpen,
+  UserRound,
+  ContactRound,
+  UserCog,
+  Code2,
+  Newspaper,
+  Video,
+  ChartNoAxesCombined,
+  LifeBuoy,
+  Package,
+  Tags,
+  Settings2,
+  BookOpen,
+  IdCard,
   BriefcaseBusiness,
   Building2,
   CalendarDays,
@@ -51,8 +67,8 @@ const sidebarSections = [
   ] },
   { label: 'Hiring & Projects', items: [
     { label: 'Jobs', to: '/admin/jobs', icon: BriefcaseBusiness },
-    { label: 'Projects', to: '/admin/projects', icon: ClipboardList, children: [
-      { label: 'Project Directory', to: '/admin/projects', icon: BriefcaseBusiness },
+    { label: 'Projects', to: '/admin/projects', icon: FolderKanban, children: [
+      { label: 'Project Directory', to: '/admin/projects', icon: FolderOpen },
       { label: 'Project Applications', to: '/admin/projects?view=applications', icon: FileCheck2 },
     ] },
     { label: 'Applications', to: '/admin/applications', icon: FileCheck2 },
@@ -61,48 +77,48 @@ const sidebarSections = [
   { label: 'People & Companies', items: [
     { label: 'Users', to: '/admin/users', icon: UsersRound, children: [
       { label: 'All Users', to: '/admin/users', icon: UsersRound },
-      { label: 'Candidates / Users', to: '/admin/users?q=users', icon: UsersRound },
+      { label: 'Candidates / Users', to: '/admin/users?q=users', icon: UserRound },
       { label: 'Admins', to: '/admin/users?q=Admin', icon: Shield },
-      { label: 'Staff', to: '/admin/users?q=staff', icon: UsersRound },
-      { label: 'Recruiters', to: '/admin/users?q=recruiter', icon: Building2 },
-      { label: 'Freelancers', to: '/admin/users?q=freelancer', icon: UsersRound },
+      { label: 'Staff', to: '/admin/users?q=staff', icon: IdCard },
+      { label: 'Recruiters', to: '/admin/users?q=recruiter', icon: ContactRound },
+      { label: 'Freelancers', to: '/admin/users?q=freelancer', icon: Code2 },
       { label: 'Hiring Team', to: '/admin/users?q=hiring', icon: UserPlus },
       { label: 'Account Team', to: '/admin/users?q=account%20team', icon: Wallet },
     ] },
-    { label: 'Candidates', to: '/admin/candidates', icon: UsersRound },
-    { label: 'Recruiters', to: '/admin/employers', icon: Building2, children: [
-      { label: 'Recruiter Management', to: '/admin/employers', icon: Building2, activePaths: ['/admin/recruiters/'] },
+    { label: 'Candidates', to: '/admin/candidates', icon: UserRound },
+    { label: 'Recruiters', to: '/admin/employers', icon: ContactRound, children: [
+      { label: 'Recruiter Management', to: '/admin/employers', icon: ContactRound, activePaths: ['/admin/recruiters/'] },
       { label: 'Recruiter Documents', to: '/admin/recruiter-documents', icon: FileCheck2 },
     ] },
     { label: 'Companies', to: '/admin/companies', icon: Building2 },
-    { label: 'Industries', to: '/admin/categories', icon: Building2 },
+    { label: 'Industries', to: '/admin/categories', icon: Factory },
   ] },
   { label: 'Content & Communication', items: [
-    { label: 'Website Content', to: '/admin/testimonials', icon: Star, children: [
+    { label: 'Website Content', to: '/admin/testimonials', icon: BookOpen, children: [
       { label: 'Testimonials', to: '/admin/testimonials', icon: Star },
-      { label: 'Video Testimonials', to: '/admin/video-testimonials', icon: Star },
-      { label: 'Press / News', to: '/admin/press-news', icon: FileText },
+      { label: 'Video Testimonials', to: '/admin/video-testimonials', icon: Video },
+      { label: 'Press / News', to: '/admin/press-news', icon: Newspaper },
       { label: 'Career Job Posts', to: '/admin/career-jobs', icon: BriefcaseBusiness },
       { label: 'FAQs', to: '/admin/faqs', icon: HelpCircle },
     ] },
-    { label: 'Policies', to: '/admin/policy', icon: FileText, children: [
-      { label: 'All Policies', to: '/admin/policy', icon: FileText },
-      { label: 'User Policies', to: '/admin/policy/users', icon: FileText },
-      { label: 'Recruiter Policies', to: '/admin/policy/recruiter', icon: FileText },
-      { label: 'Freelancer Policies', to: '/admin/policy/freelancer', icon: FileText },
+    { label: 'Policies', to: '/admin/policy', icon: Shield, children: [
+      { label: 'All Policies', to: '/admin/policy', icon: BookOpen },
+      { label: 'User Policies', to: '/admin/policy/users', icon: UserRound },
+      { label: 'Recruiter Policies', to: '/admin/policy/recruiter', icon: ContactRound },
+      { label: 'Freelancer Policies', to: '/admin/policy/freelancer', icon: Code2 },
     ] },
     { label: 'Campaigns', to: '/admin/campaigns', icon: Megaphone, roles: ['Admin', 'staff'], children: [
-      { label: 'All Campaigns', to: '/admin/campaigns' },
+      { label: 'All Campaigns', to: '/admin/campaigns', icon: Megaphone },
       { label: 'Email Marketing', to: '/admin/campaigns?channel=Email%20Marketing', icon: Mail },
       { label: 'Mobile Marketing', to: '/admin/campaigns?channel=Mobile%20Message%20Marketing', icon: MessageCircle },
     ] },
-    { label: 'Hiring Insights', to: '/admin/hiring-insights', icon: Send },
-    { label: 'Support Messages', to: '/admin/support-messages', icon: MessageCircle },
+    { label: 'Hiring Insights', to: '/admin/hiring-insights', icon: ChartNoAxesCombined },
+    { label: 'Support Messages', to: '/admin/support-messages', icon: LifeBuoy },
   ] },
   { label: 'Billing & Payments', items: [
-    { label: 'Packages', to: '/admin/package/pricing', icon: CreditCard, children: [
+    { label: 'Packages', to: '/admin/package/pricing', icon: Package, children: [
       { label: 'Pricing', to: '/admin/package/pricing', icon: CreditCard },
-      { label: 'Discount Coupons', to: '/admin/package/discount-coupons', icon: CreditCard },
+      { label: 'Discount Coupons', to: '/admin/package/discount-coupons', icon: Tags },
     ] },
     { label: 'Payments', to: '/admin/payments/transactions', icon: Wallet, children: [
       { label: 'Transactions', to: '/admin/payments/transactions', icon: ReceiptText },
@@ -118,12 +134,12 @@ const sidebarSections = [
       { label: 'Installed Plugins', to: '/admin/plugins/installed', icon: Plug },
       { label: 'Add Plugins', to: '/admin/plugins/add-new', icon: PlugZap },
     ] },
-    { label: 'Account & API Settings', to: '/admin/settings/google-auth', icon: Shield, children: [
+    { label: 'Account & API Settings', to: '/admin/settings/google-auth', icon: Settings2, children: [
       { label: 'Google Auth API', to: '/admin/settings/google-auth', icon: KeyRound },
       { label: 'WhatsApp API', to: '/admin/settings/whatsapp-api', icon: MessageCircle },
       { label: 'Email API', to: '/admin/settings/email-api', icon: Mail },
       { label: 'Supa Cloud Storage', to: '/admin/settings/supa-cloud', icon: Cloud },
-      { label: 'Roles & Permissions', to: '/admin/settings/role-permission', icon: Shield },
+      { label: 'Roles & Permissions', to: '/admin/settings/role-permission', icon: UserCog },
     ] },
   ] },
 ]
@@ -133,9 +149,9 @@ const employerSidebarItems = [
   { label: 'Recruiter Dashboard', to: '/recruiter-dashboard', icon: LayoutDashboard },
   { label: 'Post Job', to: '/post-job', icon: BriefcaseBusiness },
   { label: 'Applications', to: '/recruiter-applications', icon: ClipboardList },
-  { label: 'Candidates', to: '/recruiter-talent', icon: UsersRound },
+  { label: 'Candidates', to: '/recruiter-talent', icon: UserRound },
   { label: 'Messages', to: '/recruiter-resources', icon: MessageCircle },
-  { label: 'Settings', to: '/recruiter-profile', icon: Globe2 },
+  { label: 'Settings', to: '/recruiter-profile', icon: Settings2 },
   { label: 'Pricing', to: '/recruiter-pricing', icon: CreditCard },
 ]
 
@@ -677,7 +693,7 @@ function NotificationMenu({ isEmployer, loading, notifications, onClear }) {
       ) : items.length ? (
         <div className="grid max-h-[26rem] gap-2 overflow-y-auto pr-1">
           {items.map((item) => {
-            const Icon = item.icon
+            const Icon = item.icon || FolderOpen
             return (
               <Link className="group rounded-[7px] border border-slate-100 bg-white p-3 transition hover:border-blue-100 hover:bg-blue-50/50" key={item.id} to={item.to}>
                 <div className="flex gap-3">
@@ -959,7 +975,7 @@ function SidebarContent({ branding, isEmployer, role, onNavigate }) {
                     <Icon className="shrink-0" size={18} /><span className="min-w-0 flex-1 text-left">{item.label}</span><ChevronDown className={'shrink-0 transition-transform ' + (isExpanded ? 'rotate-180' : '')} size={15} />
                   </button>
                   {isExpanded && <div id={panelId} className="ml-5 mt-1 grid gap-1 border-l border-slate-200 pl-2">{item.children.map(child => {
-                    const ChildIcon = child.icon
+                    const ChildIcon = child.icon || FolderOpen
                     const active = activeTarget === child.to
                     return <Link aria-current={active ? 'page' : undefined} onClick={onNavigate} className={'admin-material-dropdown-item flex min-h-10 items-center gap-2.5 rounded-lg px-3 py-2 text-xs font-semibold transition ' + (active ? 'bg-[#DCE8FF] text-[#3367F6]' : 'text-slate-600 hover:bg-[#F3F6FC] hover:text-[#3367F6]')} to={child.to} key={child.to}><ChildIcon className="shrink-0" size={16} /><span>{child.label}</span></Link>
                   })}</div>}

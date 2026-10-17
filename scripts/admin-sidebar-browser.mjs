@@ -42,6 +42,9 @@ try{
  check('Six clearly labeled navigation sections',await evaluate(visibleNav+".querySelectorAll('h2').length===6"));
  check('Only Company is marked current',await evaluate(visibleNav+".querySelectorAll('[aria-current=page]').length===1 && "+visibleNav+".querySelector('[aria-current=page]').textContent.trim()==='Companies'"));
  check('API Developer is in Settings & Integrations',await evaluate(visibleNav+".querySelector('a[href=\"/admin/api-developer\"]').closest('section').getAttribute('aria-label')==='Settings & Integrations'"));
+ check('Industry and project icons match their destinations',await evaluate(visibleNav+".querySelector('a[href=\"/admin/categories\"] svg').classList.contains('lucide-factory') && [...document.querySelectorAll('nav button')].find(b=>b.textContent.trim()==='Projects').querySelector('svg').classList.contains('lucide-folder-kanban')"));
+ await evaluate("[...document.querySelectorAll('nav button')].find(b=>b.textContent.trim()==='Campaigns').click()");await delay(150);
+ check('Campaigns submenu opens without missing-icon crash',await evaluate(visibleNav+".querySelector('a[href=\"/admin/campaigns\"] svg').classList.contains('lucide-megaphone')"));
  await evaluate("[...document.querySelectorAll('nav button')].find(b=>b.textContent.trim()==='Users').click()");
  await evaluate("document.querySelector('nav a[href=\"/admin/users?q=staff\"]').click()");
  await waitFor("location.search==='?q=staff'");await delay(200);

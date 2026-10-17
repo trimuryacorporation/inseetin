@@ -273,7 +273,7 @@
       "requestedPath": "/post-job",
       "width": 375,
       "path": "/post-job",
-      "text": 2658,
+      "text": 2610,
       "overflow": false,
       "error": false,
       "errors": []
@@ -534,7 +534,7 @@
       "requestedPath": "/admin",
       "width": 1280,
       "path": "/admin-dashboard",
-      "text": 895,
+      "text": 1079,
       "overflow": false,
       "error": false,
       "errors": []
@@ -543,7 +543,7 @@
       "requestedPath": "/admin/users",
       "width": 1280,
       "path": "/admin/users",
-      "text": 772,
+      "text": 978,
       "overflow": false,
       "error": false,
       "errors": []
@@ -552,7 +552,7 @@
       "requestedPath": "/admin/jobs",
       "width": 1280,
       "path": "/admin/jobs",
-      "text": 741,
+      "text": 925,
       "overflow": false,
       "error": false,
       "errors": []
@@ -561,7 +561,7 @@
       "requestedPath": "/admin/companies",
       "width": 1280,
       "path": "/admin/companies",
-      "text": 657,
+      "text": 841,
       "overflow": false,
       "error": false,
       "errors": []
@@ -570,7 +570,7 @@
       "requestedPath": "/admin/employers",
       "width": 1280,
       "path": "/admin/employers",
-      "text": 773,
+      "text": 957,
       "overflow": false,
       "error": false,
       "errors": []
@@ -579,7 +579,7 @@
       "requestedPath": "/admin/recruiter-documents",
       "width": 1280,
       "path": "/admin/recruiter-documents",
-      "text": 767,
+      "text": 951,
       "overflow": false,
       "error": false,
       "errors": []
@@ -588,7 +588,7 @@
       "requestedPath": "/admin/candidates",
       "width": 1280,
       "path": "/admin/candidates",
-      "text": 683,
+      "text": 867,
       "overflow": false,
       "error": false,
       "errors": []
@@ -597,7 +597,7 @@
       "requestedPath": "/admin/applications",
       "width": 1280,
       "path": "/admin/applications",
-      "text": 759,
+      "text": 943,
       "overflow": false,
       "error": false,
       "errors": []
@@ -606,7 +606,7 @@
       "requestedPath": "/admin/categories",
       "width": 1280,
       "path": "/admin/categories",
-      "text": 585,
+      "text": 769,
       "overflow": false,
       "error": false,
       "errors": []
@@ -615,7 +615,7 @@
       "requestedPath": "/admin/faqs",
       "width": 1280,
       "path": "/admin/faqs",
-      "text": 834,
+      "text": 897,
       "overflow": false,
       "error": false,
       "errors": []
@@ -624,7 +624,7 @@
       "requestedPath": "/admin/testimonials",
       "width": 1280,
       "path": "/admin/testimonials",
-      "text": 840,
+      "text": 903,
       "overflow": false,
       "error": false,
       "errors": []
@@ -633,7 +633,7 @@
       "requestedPath": "/admin/seo-branding",
       "width": 1280,
       "path": "/admin/seo-branding",
-      "text": 1455,
+      "text": 1451,
       "overflow": false,
       "error": false,
       "errors": []
@@ -642,7 +642,7 @@
       "requestedPath": "/admin/projects",
       "width": 1280,
       "path": "/admin/projects",
-      "text": 1445,
+      "text": 1629,
       "overflow": false,
       "error": false,
       "errors": []
@@ -651,7 +651,7 @@
       "requestedPath": "/admin/hiring-team",
       "width": 1280,
       "path": "/admin/hiring-team",
-      "text": 1622,
+      "text": 1806,
       "overflow": false,
       "error": false,
       "errors": []
@@ -660,7 +660,7 @@
       "requestedPath": "/admin/payments/transactions",
       "width": 1280,
       "path": "/admin/payments/transactions",
-      "text": 797,
+      "text": 981,
       "overflow": false,
       "error": false,
       "errors": []
@@ -723,7 +723,7 @@
       "requestedPath": "/recruiter-dashboard",
       "width": 1280,
       "path": "/recruiter-dashboard",
-      "text": 1491,
+      "text": 1501,
       "overflow": false,
       "error": false,
       "errors": []
@@ -732,7 +732,7 @@
       "requestedPath": "/recruiter-jobs",
       "width": 1280,
       "path": "/recruiter-jobs",
-      "text": 635,
+      "text": 645,
       "overflow": false,
       "error": false,
       "errors": []
@@ -741,7 +741,7 @@
       "requestedPath": "/recruiter-profile",
       "width": 1280,
       "path": "/recruiter-profile",
-      "text": 623,
+      "text": 633,
       "overflow": false,
       "error": false,
       "errors": []
@@ -750,7 +750,7 @@
       "requestedPath": "/recruiter-applications",
       "width": 1280,
       "path": "/recruiter-applications",
-      "text": 847,
+      "text": 857,
       "overflow": false,
       "error": false,
       "errors": []
@@ -759,7 +759,7 @@
       "requestedPath": "/recruiter-find-resume",
       "width": 1280,
       "path": "/recruiter-find-resume",
-      "text": 437,
+      "text": 447,
       "overflow": false,
       "error": false,
       "errors": []
@@ -768,7 +768,7 @@
       "requestedPath": "/recruiter-pricing",
       "width": 1280,
       "path": "/recruiter-pricing",
-      "text": 1270,
+      "text": 1280,
       "overflow": false,
       "error": false,
       "errors": []
