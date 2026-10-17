@@ -69,7 +69,7 @@ app.use(
   rateLimit({
     windowMs: 15 * 60 * 1000,
     limit: Number(process.env.RATE_LIMIT || 500),
-    skip: (req) => req.path.startsWith('/api/pricing-packages'),
+    skip: (req) => req.path.startsWith('/api/pricing-packages') || req.path === '/api/integrations/v1' || req.path.startsWith('/api/integrations/v1/'),
     standardHeaders: 'draft-8',
     legacyHeaders: false,
   }),
@@ -88,6 +88,10 @@ app.use(errorHandler)
 
 async function startServer() {
   await connectDB()
+  await require('./utils/developerApiRetention').applyPermanentDeveloperPolicy({
+    Log: require('./models/DeveloperApiLog'), Key: require('./models/DeveloperApiKey'), Setting: require('./models/Setting'),
+    convertActiveKeys: process.env.NODE_ENV === 'production',
+  })
   app.listen(port, () => console.log(`API running on port ${port}`))
 }
 

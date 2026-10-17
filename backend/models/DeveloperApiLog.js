@@ -5,5 +5,5 @@ const schema = new mongoose.Schema({
  requestId: { type: String, required: true, unique: true }, method: String, resource: String, recordId: String,
  statusCode: { type: Number, default: 0 }, durationMs: Number,
 }, { timestamps: true })
-schema.index({ createdAt: 1 }, { expireAfterSeconds: 90 * 86400 })
+schema.index({ createdAt: -1 })
 module.exports = mongoose.model('DeveloperApiLog', schema)

@@ -5,7 +5,7 @@ Open **Admin ? API Developer** at /admin/api-developer.
 ## Connect your CRM
 
 1. Sign in with an active Admin account.
-2. Set a connection name, expiry, and resource permissions. Default access is read-only for jobs, companies, candidates and applications.
+2. Set a connection name and resource permissions. Keys default to Never expires; an optional dated expiry is also available. Default access is read-only for jobs, companies, candidates and applications.
 3. Generate a key and copy it immediately. Only its SHA-256 hash is stored; the original key cannot be retrieved.
 4. Store it as INSEET_API_KEY in your CRM server's environment/secret store. Do not embed it in public browser or mobile code.
 5. Set INSEET_API_BASE to the base URL shown in the Developer screen. Local development uses http://localhost:5050/api/integrations/v1. Production uses https://inseet.in/api/integrations/v1 (or the www domain when opened there). Vercel forwards /api/* to https://inseet.onrender.com, so the database and API-key storage remain on that backend. The current Vercel project root is frontend, so frontend/vercel.json supplies the live rewrite; the repository-root vercel.json contains the same rewrite for root deployments. Deploy the frontend config to Vercel after any routing change.
@@ -86,7 +86,7 @@ List queries support documented scalar field filters, literal search text, sort 
 
 - Only Admin login sessions can create/manage keys. A CRM key cannot manage other keys or grant itself additional scopes.
 - Management is scoped to the current key owner; another Admin's connection is not listed or editable here.
-- A key stops working on expiry, revocation, owner deletion, owner deactivation, or loss of Admin role. Its scopes are checked on every request.
+- A key stops working on an optional expiry, revocation, owner deletion, owner deactivation, or loss of Admin role. Its scopes are checked on every request.
 - Admin accounts cannot be created/edited/deleted through CRM keys. Passwords, tokens, Google identities and provider secrets are removed from API responses.
 - Users support local password-based account creation. Identity-provider settings remain in the Admin panel. User phone/avatar changes use the existing account controller.
 - DELETE can also remove associated cloud files or recruiter account/document records according to existing resource controllers. There is no bulk delete endpoint.
@@ -94,11 +94,11 @@ List queries support documented scalar field filters, literal search text, sort 
 - Payment CRUD controls payment **records**. It does not execute charges, refunds or transfers, activate purchased subscriptions, or bypass gateway verification.
 - Campaign sending, email/WhatsApp delivery, private provider settings, package-balance/credit operations, key management and location-history administration are not generic CRM CRUD resources.
 - CRM exports of CMS records do not re-seed default records that were deleted.
-- There are 120 requests/minute per key, plus the existing server-wide limit. Use retry/backoff on 429. Limits use the app's existing in-memory rate-limit approach; distributed production deployments may add a shared store.
+- CRM integration routes have no application request-per-minute limit; authentication, permissions and auditing still apply.
 
 ## Request history and errors
 
-Admin ? API Developer shows key-scoped request metadata for 90 days: method, resource, record ID, HTTP status, duration and request ID. It does not store raw API keys or input/output bodies. Metadata is recorded before dispatching a business-data operation; if the initial log write fails, that operation is not executed. Status 0 means unfinished; final metadata updates are best-effort after response completion. Authentication failures and requests blocked before the audit middleware are not recorded in this table.
+Admin ? API Developer keeps key-scoped request metadata without automatic expiry: method, resource, record ID, HTTP status, duration and request ID. It does not store raw API keys or input/output bodies. Metadata is recorded before dispatching a business-data operation; if the initial log write fails, that operation is not executed. Status 0 means unfinished; final metadata updates are best-effort after response completion. Authentication failures and requests blocked before the audit middleware are not recorded in this table.
 
 The response includes X-Request-Id. Error bodies use { success: false, message, requestId? }.
 
@@ -124,3 +124,7 @@ Backend tests use model stubs and an isolated HTTP server. They do not modify re
 ## Deployment routing check
 
 After both deployments, GET https://inseet.in/api/health should return 200. GET https://inseet.in/api/developer/keys and /api/integrations/v1/jobs without credentials should return 401, not 404. A 404 from the backend means the developer routes have not been deployed. Do not switch to an unrelated database or expose provider secrets to fix routing.
+
+## Permanent-access migration
+
+The Never expires option stores expiresAt: null. Deploy the updated backend before converting existing dated keys. The updated production backend applies a one-time migration at startup to make previously active dated keys permanent. Local startup does not convert shared live keys before the production backend supports permanent expiry. The migration is marked complete so later optional dated keys remain dated. Run node backend/seeders/permanentDeveloperAccess.js to remove the old history TTL index independently; --convert-active-keys is an optional manual conversion after deployment. Expired/revoked keys are never revived. Removed history cannot be recovered by removing the TTL index.

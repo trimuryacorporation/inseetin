@@ -74,7 +74,10 @@ module.exports = async function handler(req, res) {
     }
 
     if (!dbPromise) {
-      dbPromise = connectDB()
+      dbPromise = connectDB().then(() => require('../backend/utils/developerApiRetention').applyPermanentDeveloperPolicy({
+        Log: require('../backend/models/DeveloperApiLog'), Key: require('../backend/models/DeveloperApiKey'), Setting: require('../backend/models/Setting'),
+        convertActiveKeys: process.env.NODE_ENV === 'production',
+      }))
     }
 
     await dbPromise

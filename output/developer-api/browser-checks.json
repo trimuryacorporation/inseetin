@@ -1,11 +1,23 @@
 {
   "checks": [
     {
+      "name": "Never expires is the default",
+      "passed": true
+    },
+    {
+      "name": "Old limit and 90-day history message is removed",
+      "passed": true
+    },
+    {
       "name": "API Developer page loads for Admin",
       "passed": true
     },
     {
       "name": "Key creation submits chosen scopes",
+      "passed": true
+    },
+    {
+      "name": "New keys are permanent",
       "passed": true
     },
     {
@@ -18,6 +30,10 @@
     },
     {
       "name": "Editing can remove all write permissions",
+      "passed": true
+    },
+    {
+      "name": "Editing preserves permanent key expiry",
       "passed": true
     },
     {

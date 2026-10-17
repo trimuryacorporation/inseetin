@@ -6,7 +6,7 @@ Live checks recorded at 2026-10-17T10:24:24.856Z.
 
 | Check | Result |
 | --- | --- |
-| Automated API suite | 301 passed, 0 failed |
+| Automated API suite | 310 passed, 0 failed |
 | CRM resources | All 22 resource dispatch/scope and generic CRUD lifecycles passed using isolated in-memory records |
 | Browser checks | 10 passed: key creation, permissions, secret handling, revocation, responsive layouts |
 | Local CORS | 12 GET, POST/login and OPTIONS checks passed, including production-mode origin checks |
@@ -52,3 +52,7 @@ No live data was added, edited or deleted. Real Google OAuth accounts, email/Wha
 - output/api-audit/browser-results.txt
 
 Repeatable commands: npm run test:api and npm run audit:api. The live audit writes its report and exits nonzero when an endpoint fails.
+
+## Permanent API policy update
+
+The old Header/rate/history notice is removed. New keys default to no expiry. Per-key throttling is removed and CRM integrations bypass the general application limiter. History has no TTL. The existing MongoDB createdAt TTL index was removed successfully. One existing active dated key was left compatible with the old live backend; the updated production startup converts old active keys once, without reviving expired/revoked keys or converting future intentionally dated keys. 310 automated tests and 14 API Developer browser checks pass, including 130 requests with one permanent key. Frontend production build passes. Live behavior changes still require deployment.

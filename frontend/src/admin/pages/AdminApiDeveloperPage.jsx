@@ -25,7 +25,7 @@ function DeveloperWorkspace() {
   const [message, setMessage] = useState('')
   const [editing, setEditing] = useState('')
   const [name, setName] = useState('My CRM')
-  const [expiresAt, setExpiresAt] = useState(expiryDefault)
+  const [expiresAt, setExpiresAt] = useState('')
   const [scopes, setScopes] = useState(initialScopes)
   const [secret, setSecret] = useState('')
   const [reveal, setReveal] = useState(false)
@@ -53,7 +53,7 @@ function DeveloperWorkspace() {
 
   const refresh = () => { setLoading(true); setRevision(value => value + 1) }
   const toggle = scope => setScopes(current => current.includes(scope) ? current.filter(item => item !== scope) : [...current, scope])
-  const reset = () => { setEditing(''); setName('My CRM'); setExpiresAt(expiryDefault()); setScopes(initialScopes) }
+  const reset = () => { setEditing(''); setName('My CRM'); setExpiresAt(''); setScopes(initialScopes) }
   const copy = async value => {
     try { await navigator.clipboard.writeText(value); setMessage('Copied.') }
     catch { setError('Clipboard unavailable. Select and copy the value manually.') }
@@ -62,7 +62,7 @@ function DeveloperWorkspace() {
     event.preventDefault()
     setBusy(true); setError(''); setMessage('')
     try {
-      const body = { name, scopes, expiresAt: new Date(expiresAt + 'Z').toISOString() }
+      const body = { name, scopes, expiresAt: expiresAt ? new Date(expiresAt + 'Z').toISOString() : null }
       const result = editing ? await api.updateDeveloperKey(editing, body) : await api.createDeveloperKey(body)
       if (result.data.key) { setSecret(result.data.key); setReveal(false) }
       setMessage(editing ? 'Key permissions updated.' : 'CRM key created. Copy it now; it cannot be retrieved later.')
@@ -104,7 +104,6 @@ function DeveloperWorkspace() {
           <div className="flex flex-wrap items-center gap-2"><ShieldCheck className="text-blue-600" size={20} /><h2 className="text-lg font-bold">Connection details</h2></div>
           <p className="mt-2 text-sm leading-6 text-slate-500">Keep the API key on your CRM server. Changes affect the same live records shown in INSEET. Passwords and provider secrets are excluded from responses.</p>
           <div className="mt-4 flex flex-col gap-2 sm:flex-row"><input className={input + ' font-mono'} aria-label="CRM API base URL" value={baseUrl} readOnly /><button className={button} onClick={() => copy(baseUrl)} type="button"><Copy size={16} /> Copy URL</button><button className={button} onClick={download} type="button"><Download size={16} /> OpenAPI JSON</button></div>
-          <p className="mt-3 text-xs text-slate-500">Header: X-API-Key ? 120 requests/minute per key, subject to the server limit ? History: 90 days</p>
         </AdminCard>
         {secret && <AdminCard className="border-blue-200 bg-blue-50/50">
           <h2 className="font-bold text-blue-900">New API key ? shown once</h2><p className="mt-2 text-sm text-blue-800">Copy this key into your CRM server configuration before dismissing it.</p>
@@ -114,7 +113,7 @@ function DeveloperWorkspace() {
         <AdminCard>
           <form onSubmit={save} className="grid gap-4">
             <h2 className="flex items-center gap-2 text-lg font-bold"><KeyRound size={20} />{editing ? 'Edit CRM access' : 'Create CRM API key'}</h2>
-            <div className="grid gap-4 sm:grid-cols-2"><label className="grid gap-2 text-sm font-bold">Connection name<input className={input} value={name} maxLength={80} onChange={event => setName(event.target.value)} required /></label><label className="grid gap-2 text-sm font-bold">Expiry (UTC)<input className={input} type="datetime-local" value={expiresAt} onChange={event => setExpiresAt(event.target.value)} required /></label></div>
+            <div className="grid gap-4 sm:grid-cols-2"><label className="grid gap-2 text-sm font-bold">Connection name<input className={input} value={name} maxLength={80} onChange={event => setName(event.target.value)} required /></label><div className="grid gap-2"><label className="flex items-center gap-2 text-sm font-bold"><input type="checkbox" aria-label="Never expires" checked={!expiresAt} onChange={event => setExpiresAt(event.target.checked ? '' : expiryDefault())} /> Never expires</label>{expiresAt && <label className="grid gap-2 text-sm font-bold">Expiry (UTC)<input className={input} type="datetime-local" value={expiresAt} onChange={event => setExpiresAt(event.target.value)} required /></label>}</div></div>
             <div className="flex flex-wrap gap-2"><button className={button} type="button" onClick={() => setScopes(catalog.flatMap(item => item.actions.map(action => item.id + ':' + action)))}>Full CRM control</button><button className={button} type="button" onClick={() => setScopes(catalog.filter(item => item.actions.includes('read')).map(item => item.id + ':read'))}>Read only</button><button className={button} type="button" onClick={() => setScopes([])}>Clear selection</button></div>
             <div className="overflow-x-auto rounded-lg border border-slate-200"><table className="w-full min-w-[520px] text-left text-sm"><thead className="bg-slate-50"><tr><th className="p-3">Resource</th>{Object.values(actionLabels).map(label => <th key={label} className="p-3 text-center">{label}</th>)}</tr></thead><tbody className="divide-y divide-slate-100">{catalog.map(item => <tr key={item.id}><td className="p-3 font-semibold">{item.label}</td>{Object.keys(actionLabels).map(action => <td className="p-3 text-center" key={action}>{item.actions.includes(action) ? <input className="h-5 w-5 accent-blue-600" type="checkbox" aria-label={item.label + ': ' + actionLabels[action]} checked={scopes.includes(item.id + ':' + action)} onChange={() => toggle(item.id + ':' + action)} /> : <span className="text-slate-300">?</span>}</td>)}</tr>)}</tbody></table></div>
             <p className="text-xs leading-5 text-slate-500">Admin accounts and secret provider configuration stay in the Admin panel. Delete permission can remove records and their related files according to existing rules.</p>
@@ -122,8 +121,8 @@ function DeveloperWorkspace() {
           </form>
         </AdminCard>
         <AdminCard><h2 className="text-lg font-bold">Your CRM connections</h2><div className="mt-4 grid gap-3">{!keys.length && <p className="text-sm text-slate-500">No API keys yet. Create one above.</p>}{keys.map(key => {
-          const status = key.revokedAt ? 'Revoked' : new Date(key.expiresAt).getTime() <= clock ? 'Expired' : 'Active'
-          return <div className="flex flex-col justify-between gap-3 rounded-lg border border-slate-200 p-4 lg:flex-row lg:items-center" key={key._id}><div className="min-w-0"><p className="font-bold">{key.name} <span className="ml-2 text-xs text-blue-600">{status}</span></p><p className="mt-1 break-words font-mono text-xs text-slate-500">{key.prefix}???? ? {key.scopes.length} permissions</p><p className="mt-1 text-xs text-slate-500">Expires: {new Date(key.expiresAt).toLocaleString()} ? Last used: {key.lastUsedAt ? new Date(key.lastUsedAt).toLocaleString() : 'Never'}</p><details className="mt-2 text-xs text-slate-500"><summary className="cursor-pointer">View permissions</summary><p className="mt-2 break-words leading-6">{key.scopes.join(', ')}</p></details></div><div className="flex flex-wrap gap-2"><button className={button} disabled={busy || !!key.revokedAt} onClick={() => { setEditing(key._id); setName(key.name); setExpiresAt(new Date(key.expiresAt).toISOString().slice(0,16)); setScopes(key.scopes); window.scrollTo({ top: 0, behavior: 'smooth' }) }} type="button">Edit access</button><button className={button + ' text-rose-700'} disabled={busy || !!key.revokedAt} onClick={() => revoke(key)} type="button">Revoke</button></div></div>
+          const status = key.revokedAt ? 'Revoked' : key.expiresAt && new Date(key.expiresAt).getTime() <= clock ? 'Expired' : 'Active'
+          return <div className="flex flex-col justify-between gap-3 rounded-lg border border-slate-200 p-4 lg:flex-row lg:items-center" key={key._id}><div className="min-w-0"><p className="font-bold">{key.name} <span className="ml-2 text-xs text-blue-600">{status}</span></p><p className="mt-1 break-words font-mono text-xs text-slate-500">{key.prefix}???? ? {key.scopes.length} permissions</p><p className="mt-1 text-xs text-slate-500">Expires: {key.expiresAt ? new Date(key.expiresAt).toLocaleString() : 'Never'} ? Last used: {key.lastUsedAt ? new Date(key.lastUsedAt).toLocaleString() : 'Never'}</p><details className="mt-2 text-xs text-slate-500"><summary className="cursor-pointer">View permissions</summary><p className="mt-2 break-words leading-6">{key.scopes.join(', ')}</p></details></div><div className="flex flex-wrap gap-2"><button className={button} disabled={busy || !!key.revokedAt} onClick={() => { setEditing(key._id); setName(key.name); setExpiresAt(key.expiresAt ? new Date(key.expiresAt).toISOString().slice(0,16) : ''); setScopes(key.scopes); window.scrollTo({ top: 0, behavior: 'smooth' }) }} type="button">Edit access</button><button className={button + ' text-rose-700'} disabled={busy || !!key.revokedAt} onClick={() => revoke(key)} type="button">Revoke</button></div></div>
         })}</div></AdminCard>
         <AdminCard><h2 className="text-lg font-bold">API guide</h2><p className="mt-2 text-sm leading-6 text-slate-500">GET reads records, POST creates, PUT/PATCH edits, DELETE removes by ID. Every request needs its resource permission. Lists return data plus pagination; request each page to export all records. Store returned IDs in your CRM for later edits and deletes.</p><label className="mt-4 grid gap-2 text-sm font-bold">Resource<select className={input} value={selected} onChange={event => setSelected(event.target.value)}>{catalog.map(item => <option value={item.id} key={item.id}>{item.label}</option>)}</select></label>
           <pre className="mt-4 overflow-x-auto rounded-lg bg-slate-950 p-4 text-xs leading-6 text-blue-100">{resource?.singleton ? 'GET or PUT/PATCH ' + baseUrl + '/' + resource.id : example + '\n\nPOST ' + baseUrl + '/' + (resource?.id || 'jobs') + '\nPUT / PATCH / DELETE ' + baseUrl + '/' + (resource?.id || 'jobs') + '/RECORD_ID'}</pre>

@@ -18,13 +18,13 @@ function validateScopes(value, registry) {
 }
 function validateKeyInput(body, registry, now = Date.now()) {
  if (!body || typeof body !== 'object' || Array.isArray(body)) fail(400, 'Expected a JSON object.')
- const name = String(body.name || '').trim(), expiresAt = new Date(body.expiresAt)
+ const name = String(body.name || '').trim(), expiresAt = body.expiresAt == null || body.expiresAt === '' ? null : new Date(body.expiresAt)
  if (!name || name.length > 80) fail(400, 'Name must contain 1 to 80 characters.')
- if (!Number.isFinite(expiresAt.getTime()) || expiresAt.getTime() <= now || expiresAt.getTime() > now + 365 * 86400000) fail(400, 'Choose an expiry within the next 365 days.')
+ if (expiresAt && (!Number.isFinite(expiresAt.getTime()) || expiresAt.getTime() <= now || expiresAt.getTime() > now + 365 * 86400000)) fail(400, 'Choose an expiry within the next 365 days.')
  return { name, scopes: validateScopes(body.scopes, registry), expiresAt }
 }
 function isUsableKey(key, owner, now = Date.now()) {
- return Boolean(key && !key.revokedAt && new Date(key.expiresAt).getTime() > now && owner && ['Admin', 'Super Admin'].includes(owner.role) && owner.status === 'Active')
+ return Boolean(key && !key.revokedAt && (key.expiresAt == null || new Date(key.expiresAt).getTime() > now) && owner && ['Admin', 'Super Admin'].includes(owner.role) && owner.status === 'Active')
 }
 function rejectOperators(value) {
  if (!value || typeof value !== 'object') return

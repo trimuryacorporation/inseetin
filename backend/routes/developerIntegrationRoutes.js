@@ -1,6 +1,5 @@
 const express = require('express')
 const crypto = require('node:crypto')
-const rateLimit = require('express-rate-limit')
 const core = require('../utils/developerApiCore')
 function createIntegrationRouter(deps = {}) {
  const Key = deps.Key || require('../models/DeveloperApiKey')
@@ -27,7 +26,6 @@ function createIntegrationRouter(deps = {}) {
    next()
   } catch (err) { next(err) }
  })
- router.use(rateLimit({ windowMs: 60000, limit: 120, keyGenerator: req => String(req.developerKey._id), standardHeaders: 'draft-8', legacyHeaders: false }))
  router.use(async (req, res, next) => {
   try {
    const started = Date.now(), requestId = crypto.randomUUID(), parts = req.path.split('/').filter(Boolean)

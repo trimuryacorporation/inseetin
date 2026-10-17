@@ -3,7 +3,7 @@
   "info": {
     "title": "INSEET CRM API",
     "version": "1.0.0",
-    "description": "Use from your CRM server. Store X-API-Key as a server-side secret. No bulk delete or provider-secret endpoints. updatedSince returns modified records, not deleted-record tombstones. Admin accounts cannot be mutated through integration keys. Branding updates merge with saved settings. Request history is retained for 90 days."
+    "description": "Use from your CRM server. Store X-API-Key as a server-side secret. No bulk delete or provider-secret endpoints. updatedSince returns modified records, not deleted-record tombstones. Admin accounts cannot be mutated through integration keys. Branding updates merge with saved settings. Request history is retained without automatic expiry. Keys can remain valid until revoked."
   },
   "servers": [
     {

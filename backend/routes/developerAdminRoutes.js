@@ -8,7 +8,7 @@ const { fail, generateKey, validateKeyInput } = require('../utils/developerApiCo
 const router = express.Router()
 router.use(protect, authorize('Admin'))
 router.use((req, res, next) => { res.set('Cache-Control', 'no-store'); next() })
-router.get('/catalog', (req, res) => res.json({ success: true, data: { basePath: '/api/integrations/v1', resources: catalog(), rateLimit: 120, auditRetentionDays: 90 } }))
+router.get('/catalog', (req, res) => res.json({ success: true, data: { basePath: '/api/integrations/v1', resources: catalog(), rateLimit: null, auditRetentionDays: null, historyRetention: 'permanent' } }))
 router.get('/keys', asyncHandler(async (req, res) => {
  const keys = await Key.find({ owner: req.user._id }).select('-keyHash').sort('-createdAt').lean()
  res.json({ success: true, data: keys })
@@ -68,7 +68,7 @@ function buildOpenApi() {
    paths[path] = operations
   }
  }
- return { openapi: '3.0.3', info: { title: 'INSEET CRM API', version: '1.0.0', description: 'Use from your CRM server. Store X-API-Key as a server-side secret. No bulk delete or provider-secret endpoints. updatedSince returns modified records, not deleted-record tombstones. Admin accounts cannot be mutated through integration keys. Branding updates merge with saved settings. Request history is retained for 90 days.' }, servers: [{ url: '/api/integrations/v1' }], components: { securitySchemes: { CrmApiKey: { type: 'apiKey', in: 'header', name: 'X-API-Key' } }, schemas }, paths }
+ return { openapi: '3.0.3', info: { title: 'INSEET CRM API', version: '1.0.0', description: 'Use from your CRM server. Store X-API-Key as a server-side secret. No bulk delete or provider-secret endpoints. updatedSince returns modified records, not deleted-record tombstones. Admin accounts cannot be mutated through integration keys. Branding updates merge with saved settings. Request history is retained without automatic expiry. Keys can remain valid until revoked.' }, servers: [{ url: '/api/integrations/v1' }], components: { securitySchemes: { CrmApiKey: { type: 'apiKey', in: 'header', name: 'X-API-Key' } }, schemas }, paths }
 }
 router.get('/openapi.json', (req, res) => res.json(buildOpenApi()))
 module.exports = { router, buildOpenApi }
